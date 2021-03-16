@@ -18,25 +18,16 @@ async function run() {
         await client.connect();
         // Establish and verify connection
         await client.db("library").listCollections()
-        await client.db("library").collection('staff', function (err, collection) {
-            collection.find({}, {explain: true}).toArray(function (err, docs) {
-                console.dir( docs)
-                console.log("err =" + err)
-            })
-        })
-        // const adminDb = client.db('library').admin();
-        // adminDb.listDatabases(function (err, dbs) {
-        //     console.log(dbs)
-        // })
-        console.log("Connected successfully to server");
-        // await
-    } catch (e) {
+        let ass = await client.db("library").collection('staff').find({id: 1}).toArray()
+        console.log(ass)
+    } catch
+        (e) {
         throw e;
     }
-    // finally {
-    //     // Ensures that the client will close when you finish/error
-    //     await client.close();
-    // }
+// finally {
+//     // Ensures that the client will close when you finish/error
+//     await client.close();
+// }
 }
 
 run().catch(console.dir);
