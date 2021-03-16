@@ -1,12 +1,12 @@
 // import * as assert from "assert";
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var app = express();
-
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const app = express();
+const bodyParser = require('body-parser')
 const db = require('./db')
 
 db.connect(function (err) {
@@ -20,6 +20,8 @@ db.connect(function (err) {
 
 const staffRouter = require('./routes/staff')
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
