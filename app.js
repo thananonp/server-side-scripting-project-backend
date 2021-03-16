@@ -1,11 +1,15 @@
+// import * as assert from "assert";
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('dotenv').config();
+
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://thananonAdmin:Fenceheart42@library.8smya.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.URI
 const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
 async function run() {
@@ -14,8 +18,11 @@ async function run() {
         await client.connect();
         // Establish and verify connection
         await client.db("library").listCollections()
-        client.db("library").collection('staff', function (err, collection) {
-            console.log(collection.find())
+        await client.db("library").collection('staff', function (err, collection) {
+            collection.find({}, {explain: true}).toArray(function (err, docs) {
+                console.dir( docs)
+                console.log("err =" + err)
+            })
         })
         // const adminDb = client.db('library').admin();
         // adminDb.listDatabases(function (err, dbs) {
@@ -23,10 +30,13 @@ async function run() {
         // })
         console.log("Connected successfully to server");
         // await
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
+    } catch (e) {
+        throw e;
     }
+    // finally {
+    //     // Ensures that the client will close when you finish/error
+    //     await client.close();
+    // }
 }
 
 run().catch(console.dir);
