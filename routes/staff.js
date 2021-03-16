@@ -24,4 +24,16 @@ router.post('/add', async function (req, res) {
 
 })
 
+router.delete('/delete/:email', async function (req, res) {
+    let email = req.params.email
+    const collection = db.get().collection('staff')
+    let exist = await collection.find({email: email}).toArray()
+    if (exist[0] === undefined) {
+        res.send("There is no data to be deleted")
+    } else {
+        collection.deleteOne({email: email})
+        res.send("Data Deleted")
+    }
+})
+
 module.exports = router;
