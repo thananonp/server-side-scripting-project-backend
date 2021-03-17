@@ -18,7 +18,7 @@ db.connect(function (err) {
     }
 })
 
-const staffRouter = require('./routes/staff')
+const staffRouter = require('./routes/staffRoute')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))

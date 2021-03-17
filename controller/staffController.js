@@ -1,18 +1,16 @@
-const express = require('express');
-const router = express.Router();
 const db = require('../db')
+const secret = process.env.SECRETJWT
+const jwt = require('jsonwebtoken');
 
 
-/* GET users listing. */
-router.get('/getAll', function (req, res, next) {
+const getAllStaff = (req, res) => {
     const collection = db.get().collection('staff')
     collection.find().toArray(function (err, docs) {
         res.send(docs);
     })
-});
+}
 
-//Registration
-router.post('/add', async function (req, res) {
+const addNewStaff = async (req, res) => {
     const collection = db.get().collection('staff')
     let exist = await collection.find({email: req.body.email}).toArray()
     console.log(req.body)
@@ -22,11 +20,9 @@ router.post('/add', async function (req, res) {
     } else {
         res.send("Data already exist")
     }
+}
 
-})
-
-//Delete account
-router.delete('/delete/:email', async function (req, res) {
+const deleteStaff = async (req, res) => {
     let email = req.params.email
     const collection = db.get().collection('staff')
     let exist = await collection.find({email: email}).toArray()
@@ -36,10 +32,9 @@ router.delete('/delete/:email', async function (req, res) {
         collection.deleteOne({email: email})
         res.send("Data Deleted")
     }
-})
+}
 
-//Edit account
-router.put('/edit/:email', async function (req, res) {
+const editStaff = async (req, res) => {
     let email = req.params.email
     const collection = db.get().collection('staff')
     let oldStaff = await collection.find({email: email}).toArray()
@@ -55,6 +50,26 @@ router.put('/edit/:email', async function (req, res) {
         }
     }
 
-})
+}
 
-module.exports = router;
+const authenticate = async (req, res) => {
+    const collection = db.get().collection('staff')
+    // let user = await collection.findOne({email: email, password: password})
+    let user = await collection.findOne({email: req.body.email})
+    // const user = users.find(u => u.username === email && u.password === password);
+
+    if (!user) {
+        res.send("Username or password is incorrect")
+        // throw 'Username or password is incorrect';
+    } else {
+        const token = jwt.sign({sub: user.id}, secret, {expiresIn: '7d'});
+        res.send({user, token})
+    }
+}
+module.exports = {
+    getAllStaff,
+    addNewStaff,
+    deleteStaff,
+    editStaff,
+    authenticate
+}
