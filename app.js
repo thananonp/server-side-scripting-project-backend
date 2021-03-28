@@ -10,20 +10,14 @@ const bodyParser = require('body-parser')
 const jwt = require('./utils/jwt');
 const errorHandler = require('./utils/jwt-error-handler');
 const cors = require('cors')
+const db = require('./utils/db')
 app.use(cors())
 
-const db = require('./db')
+db.on('connected', () => {
+    app.listen(3000);
+});
 
-db.connect(function (err) {
-    if (err) {
-        console.log('Unable to connect to MongoDB')
-        process.exit(1)
-    } else {
-        console.log("Connected to MongoDB")
-    }
-})
 
-const staffRouter = require('./routes/staffRoute')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -40,8 +34,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+const staffRouter = require('./routes/staffRoute')
 app.use('/staff', staffRouter);
 
 // catch 404 and forward to error handler
