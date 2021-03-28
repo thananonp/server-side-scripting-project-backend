@@ -7,6 +7,11 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const app = express();
 const bodyParser = require('body-parser')
+const jwt = require('./utils/jwt');
+const errorHandler = require('./utils/jwt-error-handler');
+const cors = require('cors')
+app.use(cors())
+
 const db = require('./db')
 
 db.connect(function (err) {
@@ -22,6 +27,8 @@ const staffRouter = require('./routes/staffRoute')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(jwt())
+app.use(errorHandler)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

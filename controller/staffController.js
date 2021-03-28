@@ -55,15 +55,15 @@ const editStaff = async (req, res) => {
 const authenticate = async (req, res) => {
     const collection = db.get().collection('staff')
     // let user = await collection.findOne({email: email, password: password})
-    let user = await collection.findOne({email: req.body.email})
+    let user = await collection.findOne({email: req.body.email, password: req.body.password})
     // const user = users.find(u => u.username === email && u.password === password);
 
     if (!user) {
-        res.send("Username or password is incorrect")
-        // throw 'Username or password is incorrect';
+        res.status(422).json({error: "Could not process data"})
     } else {
         const token = jwt.sign({sub: user.id}, secret, {expiresIn: '7d'});
-        res.send({user, token})
+
+        res.status(200).json({user: user, token: token})
     }
 }
 module.exports = {
