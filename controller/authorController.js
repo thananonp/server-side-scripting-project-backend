@@ -10,9 +10,9 @@ const getAllAuthor = async (req, res) => {
 }
 
 const addNewAuthor = async (req, res) => {
-    const newBook = req.body
+    const newAuthor = req.body
     await author
-        .create(newBook)
+        .create(newAuthor)
         .then(newStaff => res.send(newStaff))
         .catch(e => {
             res.sendStatus(400)
@@ -20,9 +20,8 @@ const addNewAuthor = async (req, res) => {
 }
 
 const deleteAuthor = async (req, res) => {
-    let isbn = req.params.isbn
     await author
-        .deleteOne({"isbn": isbn})
+        .deleteOne({"_id": req.params.id})
         .then(
             res.sendStatus(204)
         ).catch(e => {
@@ -32,13 +31,11 @@ const deleteAuthor = async (req, res) => {
 }
 
 const editAuthor = async (req, res) => {
-    let isbn = req.params.isbn
+    let id = req.params.id
     await author
-        .findOneAndUpdate({isbn: isbn}, {
-            title: req.body.title,
-            year: req.body.year,
-            writer: req.body.password,
-            publisher: req.body.publisher
+        .findOneAndUpdate({"_id": id}, {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
         }, {new: true})
         .then(result => {
             if (result) {

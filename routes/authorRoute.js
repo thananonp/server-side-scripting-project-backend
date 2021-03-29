@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getAllAuthor, editAuthor, addNewAuthor, deleteAuthor} = require('../controller/bookController')
+const {getAllAuthor, editAuthor, addNewAuthor, deleteAuthor} = require('../controller/authorController')
 
 
 /* GET users listing. */
