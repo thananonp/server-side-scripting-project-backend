@@ -18,7 +18,6 @@ db.on('connected', () => {
 });
 
 
-
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(jwt())
@@ -35,7 +34,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const staffRouter = require('./routes/staffRoute')
+const bookRouter = require('./routes/bookRoute')
 app.use('/staff', staffRouter);
+app.use('/book', bookRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
