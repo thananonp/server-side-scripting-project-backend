@@ -3,7 +3,13 @@ const secret = process.env.SECRETJWT
 const jwt = require('jsonwebtoken');
 const staff = require('../models/staffModel')
 
-
+const getStaff = async (email) => {
+    const user = await staff.findOne({email: email})
+    if (user) return user
+    else {
+        return false
+    }
+}
 const getAllStaff = async (req, res) => {
     const limit = req.query.limit ? Number(req.query.limit) : 10;
     await staff
@@ -68,6 +74,7 @@ const authenticate = async (req, res) => {
     }
 }
 module.exports = {
+    getStaff,
     getAllStaff,
     addNewStaff,
     deleteStaff,

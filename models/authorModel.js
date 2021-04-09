@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const author = new Schema({
-        firstName: {type: String},
-        lastName: {type: String}
+        name: {type: String},
+        biography: {type: String}
     }, {collection: 'authors'}
 )
 

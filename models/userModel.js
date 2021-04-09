@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const staff = new Schema({
+const user = new Schema({
         firstName: {type: String, required: true},
         lastName: {type: String, required: true},
         email: {
@@ -10,7 +10,7 @@ const staff = new Schema({
             index: true
         },
         password: {type: String, required: true},
-    }, {collection: 'staffs'}
+    }, {collection: 'users'}
 )
 
-module.exports = mongoose.model('staff', staff)
+module.exports = mongoose.model('user', user)
