@@ -1,4 +1,5 @@
 const book = require('../models/bookModel')
+const user = require('../models/userModel')
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
 
@@ -31,7 +32,21 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return book.deleteOne({_id: ObjectId(args.id)})
+            return book.findOneAndDelete({_id: ObjectId(args.id)})
+        },
+        updateBookBorrow: async (parent, args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("authentication failed");
+            }
+            console.log(args)
+            return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+        },
+        clearBookBorrow: async (parent, args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("authentication failed");
+            }
+            let borrowedBy = {borrowedBy: null}
+            return book.findOneAndUpdate({_id: ObjectId(args.id)}, borrowedBy, {new: true})
         },
     },
 }

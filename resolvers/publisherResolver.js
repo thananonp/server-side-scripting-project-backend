@@ -34,4 +34,13 @@ module.exports = {
             return publisher.findOneAndDelete({_id: args.id})
         },
     },
+    Book: {
+        publisher(parent) {
+            console.log("publisher", parent)
+            return (
+                publisher
+                    .findById(parent.publisher)
+            )
+        }
+    }
 }

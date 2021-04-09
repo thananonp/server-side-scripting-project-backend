@@ -35,12 +35,11 @@ module.exports = {
     },
     Book: {
         author(parent) {
-            return parent.Connections.map(async book =>
+            console.log("author",parent)
+            return (
                 author
-                    .findById(book)
+                    .findById(parent.author)
             )
-
-
         }
     }
 }

@@ -1,14 +1,21 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const book = new Schema({
-        isbn: {type: String},
         title: {type: String},
-        year: {type: String},
-        writer: {
-            type: Schema.Types.ObjectId, ref: 'author'
+        description: {type: String},
+        dateOfPublication: {type: String},
+        pageCount: {type: Number},
+        category: {
+            type: Schema.Types.ObjectId, ref: 'category'
         },
         publisher: {
             type: Schema.Types.ObjectId, ref: 'publisher'
+        },
+        author: {
+            type: Schema.Types.ObjectId, ref: 'author'
+        },
+        borrowedBy: {
+            type: Schema.Types.ObjectId, ref: 'user'
         }
     }, {collection: 'books'}
 )

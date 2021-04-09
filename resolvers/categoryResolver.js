@@ -36,4 +36,13 @@ module.exports = {
             return category.findOneAndDelete({_id: ObjectId(args.id)})
         },
     },
+    Book: {
+        category(parent) {
+            console.log("category",parent)
+            return (
+                category
+                    .findById(parent.category)
+            )
+        }
+    }
 }

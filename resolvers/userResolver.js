@@ -42,4 +42,13 @@ module.exports = {
 
         },
     },
+    Book: {
+        borrowedBy(parent) {
+            console.log("user", parent)
+            return (
+                user
+                    .findById(parent.borrowedBy)
+            )
+        }
+    }
 }

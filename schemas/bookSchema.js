@@ -8,9 +8,9 @@ const bookSchema = gql`
     extend type Mutation {
         addBook(
             title: String
-            category: CategoryInput
-            author: AuthorInput
-            publisher: PublisherInput
+            category: ID!
+            author: ID!
+            publisher: ID!
             dateOfPublication: String
             pageCount: Int
             description: String
@@ -18,15 +18,19 @@ const bookSchema = gql`
         editBook(
             id: ID
             title: String
-            category: CategoryInput
-            author: AuthorInput
-            publisher: PublisherInput
+            category: ID!
+            author: ID!
+            publisher: ID!
             dateOfPublication: String
             pageCount: Int
             description: String
         ):Book,
         updateBookBorrow(
-            id:ID
+            id:ID!,
+            borrowedBy:ID!
+        ):Book,
+        clearBookBorrow(
+            id:ID!
         ):Book,
         deleteBook(
             id:ID
@@ -34,7 +38,7 @@ const bookSchema = gql`
     }
 
     type Book{
-        isbn: ID!
+        id: ID
         title: String
         category: Category
         author: Author
@@ -42,7 +46,7 @@ const bookSchema = gql`
         dateOfPublication: String
         pageCount: Int
         description: String
-        borrowedBy: Staff
+        borrowedBy: User
     }
 
 `;
