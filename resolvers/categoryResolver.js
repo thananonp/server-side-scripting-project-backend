@@ -1,37 +1,39 @@
-const publisher = require('../models/publisherModel')
+const category = require('../models/categoryModel')
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
 
 module.exports = {
     Query: {
-        publisher: (parent, args) => {
-            return publisher
-                .find(args.id)
+        category: (parent, args) => {
+            console.log(args.id)
+            return category
+                .findById(args.id)
+
         },
-        publishers: (parent, args) => {
-            return publisher
+        categories: (parent, args) => {
+            return category
                 .find()
         }
     },
     Mutation: {
-        addPublisher: async (parent, args, context) => {
+        addCategory: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            const newPublisher = new publisher(args)
-            return newPublisher.save()
+            const newCategory = new category(args)
+            return newCategory.save()
         },
-        editPublisher: async (parent, args, context) => {
+        editCategory: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return publisher.findOneAndUpdate(args.id, args, {new: true})
+            return category.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
         },
-        deletePublisher: async (parent, args, context) => {
+        deleteCategory: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return publisher.deleteOne({_id: ObjectId(args.id)})
+            return category.findOneAndDelete({_id: ObjectId(args.id)})
         },
     },
 }

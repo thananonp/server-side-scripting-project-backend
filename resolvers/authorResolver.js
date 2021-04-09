@@ -24,13 +24,13 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return author.findOneAndUpdate(args.id, args, {new: true})
+            return author.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         deleteAuthor: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return author.deleteOne({_id:ObjectId(args.id)})
+            return author.findOneAndDelete({_id: ObjectId(args.id)})
         },
     },
     Book: {

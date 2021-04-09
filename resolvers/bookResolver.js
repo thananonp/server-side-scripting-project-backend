@@ -25,7 +25,7 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return book.findOneAndUpdate(args.id, args, {new: true})
+            return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
         },
         deleteBook: async (parent, args, context) => {
             if (!context.user) {

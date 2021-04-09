@@ -2,19 +2,20 @@ const {gql} = require('apollo-server');
 
 const categorySchema = gql`
     extend type Query {
-        category: [Category]
+        category(id:ID!): Category,
+        categories: [Category]
     }
 
     extend type Mutation {
         addCategory(
-            title: String
+            title: String!
         ): Category,
         editCategory(
-            id:ID
-            title: String
+            id:ID!
+            title: String!
         ): Category,
         deleteCategory(
-            id:ID
+            id:ID!
         ):Category
     }
 

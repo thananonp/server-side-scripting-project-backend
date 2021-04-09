@@ -2,22 +2,22 @@ const {ApolloServer, gql} = require('apollo-server');
 
 const authorSchema = gql`
     extend type Query {
-        author: Author
+        author(id:ID!): Author
         authors: [Author]
     }
 
     extend type Mutation {
         addAuthor(
-            name: String
+            name: String!
             biography: String
         ): Author,
         editAuthor(
-            id:ID
+            id:ID!
             name: String
             biography: String
         ): Author,
         deleteAuthor(
-            id:ID
+            id:ID!
         ):Author
     }
 
