@@ -5,9 +5,8 @@ const {AuthenticationError} = require("apollo-server-errors");
 module.exports = {
     Query: {
         staff: (parent, args) => {
-            staff.find(
-                args.id()
-            )
+            return staff
+                .findById(args.id)
         },
         staffs: (parent, args) => {
             return staff
@@ -16,20 +15,20 @@ module.exports = {
     },
     Mutation: {
         addStaff: async (parent, args, context) => {
-            if (!context.Staff) {
+            if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
             const newStaff = new staff(args)
             return newStaff.save()
         },
         editStaff: async (parent, args, context) => {
-            if (!context.Staff) {
+            if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
             return staff.findOneAndUpdate(args.id, args, {new: true})
         },
         deleteStaff: async (parent, args, context) => {
-            if (!context.Staff) {
+            if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
             return staff.deleteOne({_id: ObjectId(args.id)})
