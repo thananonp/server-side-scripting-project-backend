@@ -38,7 +38,7 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             console.log(args.id)
-            return user.deleteOne({_id: ObjectId(args.id)})
+            return user.findOneAndDelete({_id: ObjectId(args.id)})
 
         },
     },

@@ -2,7 +2,7 @@ const {gql} = require('apollo-server');
 
 const publisherSchema = gql`
     extend type Query {
-        publisher(id:ID): Publisher
+        publisher(id:ID!): Publisher
         publishers: [Publisher]
     }
 

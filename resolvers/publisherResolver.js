@@ -25,13 +25,13 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return publisher.findOneAndUpdate(args.id, args, {new: true})
+            return publisher.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         deletePublisher: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return publisher.deleteOne({_id: ObjectId(args.id)})
+            return publisher.findOneAndDelete({_id: args.id})
         },
     },
 }

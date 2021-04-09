@@ -25,13 +25,13 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return staff.findOneAndUpdate(args.id, args, {new: true})
+            return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         deleteStaff: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return staff.deleteOne({_id: ObjectId(args.id)})
+            return staff.findOneAndDelete({_id: ObjectId(args.id)})
         },
     },
 }
