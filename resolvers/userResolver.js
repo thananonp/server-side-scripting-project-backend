@@ -30,6 +30,7 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
+            args.password = await bcrpyt.hash(args.password, 12)
             return user.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         deleteUser: async (parent, args, context) => {

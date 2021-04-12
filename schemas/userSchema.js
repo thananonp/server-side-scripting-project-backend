@@ -15,14 +15,14 @@ const userSchema = gql`
             password: String
         ): User,
         editUser(
-            id: ID,
+            id: ID!,
             email: String
             firstName: String
             lastName: String
             password: String
         ): User,
         deleteUser(
-            id:ID
+            id:ID!
         ): User
     }
 

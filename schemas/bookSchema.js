@@ -4,6 +4,7 @@ const bookSchema = gql`
     extend type Query {
         book(id: ID!): Book
         books(limit: String): [Book]
+        searchBooks(query:String, scope:String): [Book]
     }
     extend type Mutation {
         addBook(
