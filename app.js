@@ -106,6 +106,8 @@ const checkAuth = (req, res) => {
         app.get('/', (req, res) => {
             res.send('Hello Secure World!');
         });
+        app.use('/staff', require('./routes/staffRoute'))
+        app.use('/user', require('./routes/userRoute'))
 
 
 // catch 404 and forward to error handler

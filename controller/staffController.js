@@ -2,6 +2,9 @@ const db = require('../utils/db')
 const secret = process.env.SECRETJWT
 const jwt = require('jsonwebtoken');
 const staff = require('../models/staffModel')
+const passport = require('passport')
+require('dotenv').config();
+const bcrypt = require("bcrypt");
 
 const getStaff = async (email) => {
     const user = await staff.findOne({email: email})
@@ -64,14 +67,29 @@ const editStaff = async (req, res) => {
 }
 
 const authenticate = async (req, res) => {
-    let user = await staff.findOne({email: req.body.email, password: req.body.password})
-    if (!user) {
-        res.status(422).json({error: "Could not process data"})
-    } else {
-        const token = jwt.sign({sub: user.id}, secret, {expiresIn: '7d'});
+    passport.authenticate('staff-local', {session: false}, (err, user, info) => {
+        console.log("==== in StaffController")
+        console.log("err",err)
+        console.log("user",user)
+        console.log("info",info)
+        if (err || !user) {
+            return res.status(400).json({
+                message: 'Something is not right',
+                user: user
+            });
+        }
+        req.login(user, {session: false}, (err) => {
+            if (err) {
+                res.send(err);
+            }
+            // console.log(user)
+            // generate a signed son web token with the contents of user object and return it in the response
+            const token = jwt.sign(user, process.env.SECRETJWT);
 
-        res.status(200).json({user: user, token: token})
-    }
+            return res.json({token});
+        });
+
+    })(req, res);
 }
 module.exports = {
     getStaff,

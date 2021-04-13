@@ -1,4 +1,5 @@
 const staff = require('../models/staffModel')
+const bcrpyt = require("bcrypt");
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
 
@@ -18,6 +19,7 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
+            args.password = await bcrpyt.hash(args.password, 12)
             const newStaff = new staff(args)
             return newStaff.save()
         },
@@ -25,6 +27,7 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
+            args.password = await bcrpyt.hash(args.password, 12)
             return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         deleteStaff: async (parent, args, context) => {

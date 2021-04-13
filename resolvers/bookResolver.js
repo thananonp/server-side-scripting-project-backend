@@ -18,7 +18,7 @@ module.exports = {
         searchBooks: async (parent, args) => {
             console.log(args)
             if (args.scope === 'title') {
-                return book.find({title: args.query})
+                return book.find({title: {"$regex": args.query, "$options": "i"}})
             } else if (args.scope === 'publisher') {
                 return publisher.find({name: {"$regex": args.query, "$options": "i"}}).then(
                     result => {
@@ -26,10 +26,10 @@ module.exports = {
                         const idArray = result.map(i => {
                             return i._id
                         })
-                        return book.find({publisher:{"$in":idArray}})
-                            // .then(result => {
-                            //     console.log("bookfindresult", result)
-                            // })
+                        return book.find({publisher: {"$in": idArray}})
+                        // .then(result => {
+                        //     console.log("bookfindresult", result)
+                        // })
                     }
                 )
                 // console.log("findPublisher", findPublisher)
@@ -52,7 +52,7 @@ module.exports = {
                         const idArray = result.map(i => {
                             return i._id
                         })
-                        return book.find({author:{"$in":idArray}})
+                        return book.find({author: {"$in": idArray}})
                         // .then(result => {
                         //     console.log("bookfindresult", result)
                         // })
