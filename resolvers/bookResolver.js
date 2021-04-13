@@ -1,6 +1,6 @@
 const book = require('../models/bookModel')
 const publisher = require('../models/publisherModel')
-const author = require('../models/authorModell')
+const author = require('../models/authorModel')
 const user = require('../models/userModel')
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
@@ -20,15 +20,44 @@ module.exports = {
             if (args.scope === 'title') {
                 return book.find({title: args.query})
             } else if (args.scope === 'publisher') {
-                const findPublisher = await publisher.findOne({name: args.query})
-                // console.log(findPublisher)
+                return publisher.find({name: {"$regex": args.query, "$options": "i"}}).then(
+                    result => {
+                        console.log("result", result)
+                        const idArray = result.map(i => {
+                            return i._id
+                        })
+                        return book.find({publisher:{"$in":idArray}})
+                            // .then(result => {
+                            //     console.log("bookfindresult", result)
+                            // })
+                    }
+                )
+                // console.log("findPublisher", findPublisher)
+                // return findPublisher
+                // console.log("findPublisher",findPublisher._id)
+                // findPublisher.map(async publisher => {
+                //     console.log("Publisher", publisher._id)
+                //      book.find({publisher: publisher._id}).then(book =>
+                //         result.push(book))
+                //     // console.log(book.find({publisher: publisher._id}))
+                //     // result.push(book.find({publisher: publisher._id}))
+                // }).then(i => console.log("result", result)
+                // )
                 // console.log(findPublisher._id)
-                return book.find({publisher: findPublisher._id})
+                // return book.find({publisher: findPublisher._id})
             } else if (args.scope === 'author') {
-                const findAuthor = await author.findOne({name: args.query})
-                // console.log(findPublisher)
-                // console.log(findPublisher._id)
-                return book.find({author: findAuthor._id})
+                return author.find({name: {"$regex": args.query, "$options": "i"}}).then(
+                    result => {
+                        console.log("result", result)
+                        const idArray = result.map(i => {
+                            return i._id
+                        })
+                        return book.find({author:{"$in":idArray}})
+                        // .then(result => {
+                        //     console.log("bookfindresult", result)
+                        // })
+                    }
+                )
             }
             // return book
             //     .find()
