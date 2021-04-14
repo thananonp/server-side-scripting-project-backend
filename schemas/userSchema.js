@@ -5,6 +5,7 @@ const userSchema = gql`
     extend type Query {
         user(id: ID!): User
         users: [Staff]
+        userComparePassword(id:ID!,password:String!): Boolean
     }
 
     extend type Mutation {
@@ -19,7 +20,10 @@ const userSchema = gql`
             email: String
             firstName: String
             lastName: String
-            password: String
+        ): User,
+        changePasswordUser(
+            id:ID!,
+            password:String!
         ): User,
         deleteUser(
             id:ID!

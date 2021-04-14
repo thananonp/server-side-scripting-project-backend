@@ -20,7 +20,7 @@ const passport = require('./utils/passportAuth');
 const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
-// app.use(cors())
+app.use(cors())
 
 // app.use(jwt())
 app.use(errorHandler)

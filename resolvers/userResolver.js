@@ -13,6 +13,46 @@ module.exports = {
         users: (parent, args) => {
             return user
                 .find()
+        },
+        userComparePassword: async (parent, args) => {
+            console.log("args.password", args.password)
+            return await user.findById(args.id).then(result => {
+                console.log("REAL", result.password)
+                return bcrpyt.compare(args.password, result.password)
+                // compareUser = result
+            })
+            // console.log(compareUser)
+            // return bcrpyt.compare(args.password, compareUser.password)
+            // , (err, result) => {
+            //     if (result) {
+            //         console.log("return true")
+            //         // returnBoolean = true
+            //         return true
+            //     } else {
+            //         // returnBoolean = false
+            //         console.log("return false")
+            //         return false
+            //     }
+            // })
+            //     .then(async result => {
+            //     console.log("result.password", result.password)
+            //     return await bcrpyt.compare(args.password, result.password, async (err, result) => {
+            //         // console.log(err)
+            //         // console.log(result)
+            //         if (result) {
+            //             console.log("return true")
+            //             // returnBoolean = true
+            //             return true
+            //         } else {
+            //             returnBoolean = false
+            //             console.log("return false")
+            //             return false
+            //         }
+            //     })
+            // })
+            // console.log("FINALLY")
+            // console.log("b ", b)
+            // return returnBoolean
         }
     },
     Mutation: {
@@ -30,6 +70,16 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
+            // args.password = await bcrpyt.hash(args.password, 12)
+            console.log(args)
+            return user.findOneAndUpdate({_id: args.id}, args, {new: true})
+        },
+        changePasswordUser: async (parent, args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("authentication failed");
+            }
+
+            console.log(args)
             args.password = await bcrpyt.hash(args.password, 12)
             return user.findOneAndUpdate({_id: args.id}, args, {new: true})
         },

@@ -40,7 +40,7 @@ const authenticate = async (req, res) => {
             }
             // console.log(user)
             // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign(user, process.env.SECRETJWT);
+            const token = jwt.sign({...user, type:'user'}, process.env.SECRETJWT);
 
             return res.json({token});
         });

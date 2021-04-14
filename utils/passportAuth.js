@@ -76,9 +76,8 @@ passport.use('user-local',
                             if (result) {
                                 console.log("Strategy logging in")
                                 console.log("User =", user)
-                                const returnUser = user
                                 setTimeout(() => {
-                                    return done(null, {returnUser}, {message: 'Logged In Successfully'});
+                                    return done(null, {user}, {message: 'Logged In Successfully'});
                                 }, 500)
                             } else {
                                 console.log("Strategy password incorrect")
