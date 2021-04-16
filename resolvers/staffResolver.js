@@ -12,6 +12,14 @@ module.exports = {
         staffs: (parent, args) => {
             return staff
                 .find()
+        },
+        staffComparePassword: async (parent, args) => {
+            console.log("args.password", args.password)
+            return await staff.findById(args.id).then(result => {
+                console.log("REAL", result.password)
+                return bcrpyt.compare(args.password, result.password)
+                // compareUser = result
+            })
         }
     },
     Mutation: {
@@ -27,6 +35,15 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
+            args.password = await bcrpyt.hash(args.password, 12)
+            return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
+        },
+        changePasswordStaff: async (parent, args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("authentication failed");
+            }
+
+            console.log(args)
             args.password = await bcrpyt.hash(args.password, 12)
             return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
