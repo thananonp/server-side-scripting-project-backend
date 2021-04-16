@@ -31,10 +31,10 @@ passport.use('staff-local',
                             console.log("Strategy result", result)
                             if (result) {
                                 console.log("Strategy logging in")
-                                console.log("User =", staff)
+                                console.log("Staff =", staff)
                                 const returnUser = staff
                                 setTimeout(() => {
-                                    return done(null, {returnUser}, {message: 'Logged In Successfully'});
+                                    return done(null, {user:staff}, {message: 'Logged In Successfully'});
                                 }, 500)
                             } else {
                                 console.log("Strategy password incorrect")
