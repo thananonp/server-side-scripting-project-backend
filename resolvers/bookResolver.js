@@ -11,9 +11,17 @@ module.exports = {
             return book.findById(args.id)
         },
         books: (parent, args) => {
-            return book
-                .find()
-                .limit(args.limit ? args.limit : 10)
+            if (args.borrowed) {
+                return book
+                    .find({borrowedBy: {$ne: null}})
+            } else if (args.borrowed === false) {
+                return book
+                    .find({borrowedBy: {$eq: null}})
+            } else {
+                return book
+                    .find()
+                // .limit(args.limit ? args.limit : 10)
+            }
         },
         searchBooks: async (parent, args) => {
             console.log(args)
@@ -90,15 +98,35 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             console.log(args)
-            return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            try {
+                await user.findOneAndUpdate({_id: args.borrowedBy}, {currentlyBorrowed: args.id})
+                await book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+                return true
+
+            } catch (e) {
+                return false
+            }
         },
         clearBookBorrow: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            let borrowedBy = {borrowedBy: null}
-            return book.findOneAndUpdate({_id: ObjectId(args.id)}, borrowedBy, {new: true})
+            try {
+                await book.findOneAndUpdate({_id: ObjectId(args.id)}, {borrowedBy: null}, {new: false}, async (error, result) => {
+                    console.log("book clearBookBorrowed", result)
+                    await user.findOneAndUpdate({_id: result.borrowedBy}, {currentlyBorrowed: null})
+                    return true
+                })
+            } catch (e) {
+                return false
+            }
         },
     },
     //TODO clearBookBorrow
+    User: {
+        currentlyBorrowed(parent) {
+            console.log("book", parent)
+            return book.findById(parent.currentlyBorrowed)
+        }
+    }
 }

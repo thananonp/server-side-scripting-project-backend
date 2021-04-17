@@ -35,7 +35,6 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            args.password = await bcrpyt.hash(args.password, 12)
             return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         changePasswordStaff: async (parent, args, context) => {

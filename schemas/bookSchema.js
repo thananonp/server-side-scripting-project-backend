@@ -3,7 +3,7 @@ const {gql} = require('apollo-server');
 const bookSchema = gql`
     extend type Query {
         book(id: ID!): Book
-        books(limit: String): [Book]
+        books(limit: String, borrowed: Boolean): [Book]
         searchBooks(query:String, scope:String): [Book]
     }
     extend type Mutation {
@@ -29,10 +29,10 @@ const bookSchema = gql`
         updateBookBorrow(
             id:ID!,
             borrowedBy:ID!
-        ):Book,
+        ):Boolean,
         clearBookBorrow(
             id:ID!
-        ):Book,
+        ):Boolean,
         deleteBook(
             id:ID
         ):Book

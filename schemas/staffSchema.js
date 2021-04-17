@@ -20,7 +20,6 @@ const userSchema = gql`
             email: String
             firstName: String
             lastName: String
-            password: String
         ): Staff,
         changePasswordStaff(
             id:ID!,

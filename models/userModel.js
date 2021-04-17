@@ -10,6 +10,9 @@ const user = new Schema({
             index: true
         },
         password: {type: String, required: true},
+        currentlyBorrowed:{
+            type: Schema.Types.ObjectId, ref: 'book'
+        }
     }, {collection: 'users'}
 )
 
