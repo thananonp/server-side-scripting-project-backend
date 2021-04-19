@@ -7,20 +7,24 @@ const cookieParser = require('cookie-parser');
 const {ApolloServer} = require('apollo-server-express')
 const logger = require('morgan');
 const bodyParser = require('body-parser')
-const jwt = require('./utils/jwt');
+// const jwt = require('./utils/jwt');
 const errorHandler = require('./utils/jwt-error-handler');
 const cors = require('cors')
 const schemas = require('./schemas/index.js');
 const resolvers = require('./resolvers/index.js');
-const production = require("./sec/production");
-const {localhost} = require("./sec/localhost");
+
 const helmet = require('helmet')
 const passport = require('./utils/passportAuth');
 
 const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
-app.use(cors())
+app.use(cookieParser());
+const corsOptions = {
+    origin: 'http://localhost:8001',
+    credentials: true // <-- REQUIRED backend setting
+};
+app.use(cors(corsOptions));
 
 // app.use(jwt())
 app.use(errorHandler)
@@ -45,11 +49,15 @@ app.use(errorHandler)
 // app.use('/publisher', publisherRouter)
 const checkAuth = (req, res) => {
     try {
+        console.log('checkAuth req', req.headers.authorization)
         return new Promise((resolve, reject) => {
             passport.authenticate(
-                "jwt",
+                'jwt',
                 {session: false},
                 (err, user, info) => {
+                    console.log(err)
+                    console.log(user)
+                    console.log(info)
                     if (!user) {
                         resolve(false);
                     }
@@ -77,19 +85,20 @@ const checkAuth = (req, res) => {
             resolvers,
             context: async ({req, res}) => {
                 if (req) {
-                    // const user = await checkAuth(req, res)
-                    const user = true
+                    const user = await checkAuth(req, res)
+                    // const user = true
                     return {req, res, user}
                 }
             },
 
         });
         server.applyMiddleware({app});
-
         process.env.NODE_ENV = process.env.NODE_ENV || 'development';
         if (process.env.NODE_ENV === 'production') {
+            const production = require("./sec/production");
             production(app, 3000);
         } else {
+            const localhost = require("./sec/localhost");
             localhost(app, 8000, 3000);
         }
 

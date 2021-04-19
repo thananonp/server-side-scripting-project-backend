@@ -10,6 +10,7 @@ const getUser = async (email) => {
         return false
     }
 }
+
 const authenticate = async (req, res) => {
     // const hashedPassword = await bcrypt.compare(req.body.password, 12)
     // console.log(hashedPassword)
@@ -48,6 +49,5 @@ const authenticate = async (req, res) => {
     })(req, res);
 }
 module.exports = {
-    getUser,
-    authenticate
+    getUser,    authenticate
 }

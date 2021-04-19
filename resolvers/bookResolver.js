@@ -17,6 +17,15 @@ module.exports = {
             } else if (args.borrowed === false) {
                 return book
                     .find({borrowedBy: {$eq: null}})
+            } else if (args.category) {
+                return book
+                    .find({category: args.category})
+            } else if (args.author) {
+                return book
+                    .find({author: args.author})
+            } else if (args.publisher) {
+                return book
+                    .find({publisher: args.publisher})
             } else {
                 return book
                     .find()
@@ -98,6 +107,7 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             console.log(args)
+            args.dateOfBorrow = Date.now()
             try {
                 await user.findOneAndUpdate({_id: args.borrowedBy}, {currentlyBorrowed: args.id})
                 await book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})

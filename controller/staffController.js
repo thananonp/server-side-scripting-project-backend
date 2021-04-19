@@ -1,5 +1,3 @@
-const db = require('../utils/db')
-const secret = process.env.SECRETJWT
 const jwt = require('jsonwebtoken');
 const staff = require('../models/staffModel')
 const passport = require('passport')

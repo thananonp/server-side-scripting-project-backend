@@ -22,5 +22,5 @@ const localhost = (app, httpsPort, httpPort) => {
      http.createServer(httpsRedirect).listen(httpPort);
 };
 
-module.exports = {localhost};
+module.exports = localhost;
 

@@ -4,7 +4,7 @@ const userSchema = gql`
 
     extend type Query {
         user(id: ID!): User
-        users: [Staff]
+        users(borrowed: Boolean): [Staff]
         userComparePassword(id:ID!,password:String!): Boolean
     }
 

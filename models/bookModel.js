@@ -16,6 +16,9 @@ const book = new Schema({
         },
         borrowedBy: {
             type: Schema.Types.ObjectId, ref: 'user'
+        },
+        dateOfBorrow: {
+            type: Date
         }
     }, {collection: 'books'}
 )

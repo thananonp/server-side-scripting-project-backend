@@ -11,8 +11,17 @@ module.exports = {
 
         },
         users: (parent, args) => {
-            return user
-                .find()
+            if (args.borrowed) {
+                return user
+                    .find({currentlyBorrowed: {$ne: null}})
+            } else if (args.borrowed === false) {
+                return user
+                    .find({currentlyBorrowed: {$eq: null}})
+            } else {
+                return user
+                    .find()
+            }
+
         },
         userComparePassword: async (parent, args) => {
             console.log("args.password", args.password)
