@@ -30,18 +30,28 @@ const authenticate = async (req, res) => {
         console.log("user", user)
         console.log("info", info)
         if (err || !user) {
-            return res.status(400).json({
-                message: 'Something is not right',
-                user: user
-            });
+            if (err === 401) {
+                return res.status(401).json({
+                    message: 'Something is not right',
+                });
+            } else if (err === 404) {
+                return res.status(404).json({
+                    message: 'Invalid credential',
+                });
+            } else {
+                return res.status(400).json({
+                    message: 'Bad request',
+                });
+            }
         }
         req.login(user, {session: false}, (err) => {
             if (err) {
                 res.send(err);
             }
             // console.log(user)
+            // console.log(user)
             // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign({...user, type:'user'}, process.env.SECRETJWT);
+            const token = jwt.sign({...user, type: 'user'}, process.env.SECRETJWT);
 
             return res.json({token});
         });
@@ -49,5 +59,5 @@ const authenticate = async (req, res) => {
     })(req, res);
 }
 module.exports = {
-    getUser,    authenticate
+    getUser, authenticate
 }

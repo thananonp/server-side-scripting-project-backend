@@ -67,9 +67,9 @@ module.exports = {
     Mutation: {
         addUser: async (parent, args, context) => {
             // email dupe is checked
-            if (!context.user) {
-                throw new AuthenticationError("authentication failed");
-            }
+            // if (!context.user) {
+            //     throw new AuthenticationError("authentication failed");
+            // }
             args.password = await bcrpyt.hash(args.password, 12)
             const newUser = new user(args)
             return newUser.save()

@@ -10,15 +10,15 @@ const userSchema = gql`
 
     extend type Mutation {
         addStaff(
-            email: String
-            firstName: String
-            lastName: String
-            password: String
+            email: String!,
+            firstName: String!,
+            lastName: String!,
+            password: String!,
         ): Staff,
         editStaff(
-            id: ID,
-            email: String
-            firstName: String
+            id: ID!,
+            email: String,
+            firstName: String,
             lastName: String
         ): Staff,
         changePasswordStaff(
@@ -26,7 +26,7 @@ const userSchema = gql`
             password:String!
         ): Staff,
         deleteStaff(
-            id:ID
+            id:ID!
         ): Staff
     }
 

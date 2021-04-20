@@ -65,12 +65,6 @@ passport.use('user-local',
                         console.log("Strategy received password:", password)
                         console.log("Strategy user password", user.password)
                         // console.log('Strategy', user); // result is binary row
-                        if (user === undefined) {
-                            console.log("Strategy user undefined")
-                            setTimeout(() => {
-                                return done(null, false, {message: 'Incorrect email.'});
-                            }, 1000)
-                        }
                         bcrypt.compare(password, user.password, (err, result) => {
                             console.log("Strategy result", result)
                             if (result) {
@@ -82,7 +76,7 @@ passport.use('user-local',
                             } else {
                                 console.log("Strategy password incorrect")
                                 setTimeout(() => {
-                                    return done(null, false, {message: 'Incorrect password.'});
+                                    return done(401, false, {message: 'Invalid credential.'});
                                 }, 500)
                             }
                         })
@@ -92,6 +86,7 @@ passport.use('user-local',
                     })
 
             } catch (err) {
+                console.log("error",err)
                 return done(err);
             }
         }));

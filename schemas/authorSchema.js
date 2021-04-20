@@ -9,12 +9,12 @@ const authorSchema = gql`
     extend type Mutation {
         addAuthor(
             name: String!
-            biography: String
+            biography: String!
         ): Author,
         editAuthor(
             id:ID!
-            name: String
-            biography: String
+            name: String!
+            biography: String!
         ): Author,
         deleteAuthor(
             id:ID!

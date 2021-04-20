@@ -8,16 +8,16 @@ const publisherSchema = gql`
 
     extend type Mutation {
         addPublisher(
-            name: String
-            description: String
+            name: String!
+            description: String!
         ): Publisher,
         editPublisher(
-            id:ID
-            name: String
-            description: String
+            id:ID!
+            name: String!
+            description: String!
         ): Publisher,
         deletePublisher(
-            id:ID
+            id:ID!
         ):Publisher
     }
 
