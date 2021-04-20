@@ -1,4 +1,5 @@
 const user = require('../models/userModel')
+const book = require('../models/bookModel')
 const bcrpyt = require('bcrypt')
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
@@ -97,8 +98,13 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            console.log(args.id)
-            return user.findOneAndDelete({_id: ObjectId(args.id)})
+            try {
+                // console.log("deleteUser", args.id)
+                await book.findOneAndUpdate({borrowedBy: args.id}, {borrowedBy: null})
+                return user.findOneAndDelete({_id: ObjectId(args.id)})
+            } catch (e) {
+                return false
+            }
 
         },
     },
