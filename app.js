@@ -54,14 +54,22 @@ const checkAuth = (req, res) => {
             passport.authenticate(
                 'jwt',
                 {session: false},
-                (err, user, info) => {
-                    console.log(err)
-                    console.log(user)
-                    console.log(info)
-                    if (!user) {
-                        resolve(false);
+                (err, user, staff, info) => {
+                    console.log("=====CHECK-AUTH====")
+                    console.log("err",err)
+                    console.log("user",user)
+                    console.log("staff",staff)
+                    console.log("info",info)
+                    if (!user && !staff) {
+                        reject("No matching")
                     }
-                    resolve(user);
+                    if (user) {
+                        console.log("Resolve USER")
+                        resolve(user);
+                    } else if (staff) {
+                        console.log("Resolve STAFF")
+                        resolve(staff);
+                    }
                 }
             )(req, res);
         });

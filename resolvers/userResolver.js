@@ -68,7 +68,7 @@ module.exports = {
             // if (!context.user) {
             //     throw new AuthenticationError("authentication failed");
             // }
-            args.password = await bcrpyt.hash(args.password, 12)
+            // args.password = await bcrpyt.hash(args.password, 12)
             const newUser = new user(args)
             return newUser.save()
         },

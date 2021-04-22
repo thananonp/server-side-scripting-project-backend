@@ -17,20 +17,20 @@ module.exports = {
     },
     Mutation: {
         addCategory: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             const newCategory = new category(args)
             return newCategory.save()
         },
         editCategory: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             return category.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
         },
         deleteCategory: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             return category.findOneAndDelete({_id: ObjectId(args.id)})

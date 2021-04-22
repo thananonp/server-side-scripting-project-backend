@@ -42,7 +42,7 @@ passport.use('staff-local',
                     })
 
             } catch (err) {
-                console.log("error",err)
+                console.log("error", err)
 
                 return done(err);
             }
@@ -81,7 +81,7 @@ passport.use('user-local',
                     })
 
             } catch (err) {
-                console.log("error",err)
+                console.log("error", err)
                 return done(err);
             }
         }));
@@ -95,27 +95,40 @@ passport.use('jwt', new JWTStrategy({
         try {
             console.log("===jwt===")
             console.log("JWT PAYLOAD", jwtPayload)
-            let user
             if (jwtPayload.type === 'user') {
-                user = await userController.getUser(jwtPayload.user.email);
-                console.log("JWTStrategy user payload password", jwtPayload.user.password)
-                console.log("JWTStrategy user password", user.password)
+                const user = await userController.getUser(jwtPayload.user.email);
+                console.log(" user payload password", jwtPayload.user.password)
+                console.log(" user password", user.password)
+                if (!bcrypt.compare(jwtPayload.user.password, user.password)) {
+                    console.log("user password incorrect")
+                    return done(null, false, null, {message: 'Incorrect password.'});
+                } else {
+                    console.log("user logged in successfully")
+                    return done(null, user, null, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type}
+                }
             } else if (jwtPayload.type === 'staff') {
-                user = await staffController.getStaff(jwtPayload.user.email);
-                console.log("JWTStrategy user payload password", jwtPayload.user.password)
-                console.log("JWTStrategy staff password", user.password)
+                const staff = await staffController.getStaff(jwtPayload.user.email);
+                console.log("staff payload password", jwtPayload.user.password)
+                console.log(" staff password", staff.password)
+                if (!bcrypt.compare(jwtPayload.user.password, staff.password)) {
+                    console.log("staff password incorrect")
+                    return done(null, null, false, {message: 'Incorrect password.'});
+                } else {
+                    console.log("staff successfully")
+                    return done(null, null, staff, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type}
+                }
             }
             //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
 
             // console.log('Local strategy', user); // result is binary row
 
-            if (!bcrypt.compare(jwtPayload.user.password, user.password)) {
-                console.log("JWTStrategy password incorrect")
-                return done(null, false, {message: 'Incorrect password.'});
-            } else {
-                console.log("JWTStrategy successfully")
-                return done(null, user, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type}
-            }
+            // if (!bcrypt.compare(jwtPayload.user.password, user.password)) {
+            //     console.log("JWTStrategy password incorrect")
+            //     return done(null, false, {message: 'Incorrect password.'});
+            // } else {
+            //     console.log("JWTStrategy successfully")
+            //     return done(null, user, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type}
+            // }
         } catch
             (err) {
             console.error(err)

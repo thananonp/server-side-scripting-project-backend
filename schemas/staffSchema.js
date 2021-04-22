@@ -37,6 +37,7 @@ const userSchema = gql`
         firstName: String
         lastName: String
         password: String
+        type:String
     }
 `;
 

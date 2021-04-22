@@ -53,21 +53,21 @@ module.exports = {
     },
     Mutation: {
         addStaff: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            args.password = await bcrpyt.hash(args.password, 12)
+            // args.password = await bcrpyt.hash(args.password, 12)
             const newStaff = new staff(args)
             return newStaff.save()
         },
         editStaff: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         changePasswordStaff: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
 
@@ -76,7 +76,7 @@ module.exports = {
             return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
         },
         deleteStaff: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             return staff.findOneAndDelete({_id: ObjectId(args.id)})

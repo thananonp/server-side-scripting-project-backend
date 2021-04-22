@@ -84,26 +84,26 @@ module.exports = {
     Mutation: {
         addBook: async (parent, args, context) => {
             console.log("addBook args", args)
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             const newBook = new book(args)
             return newBook.save()
         },
         editBook: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
         },
         deleteBook: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             return book.findOneAndDelete({_id: ObjectId(args.id)})
         },
         updateBookBorrow: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             console.log(args)
@@ -118,7 +118,7 @@ module.exports = {
             }
         },
         clearBookBorrow: async (parent, args, context) => {
-            if (!context.user) {
+            if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
             try {
@@ -132,7 +132,6 @@ module.exports = {
             }
         },
     },
-    //TODO clearBookBorrow
     User: {
         currentlyBorrowed(parent) {
             // console.log("book", parent)
