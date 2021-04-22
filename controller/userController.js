@@ -12,18 +12,6 @@ const getUser = async (email) => {
 }
 
 const authenticate = async (req, res) => {
-    // const hashedPassword = await bcrypt.compare(req.body.password, 12)
-    // console.log(hashedPassword)
-    // let user = await staff.findOne({email: req.body.email})
-    // bcrypt.compare(req.body.password, user.password, 12)
-    // // let user = await staff.findOne({email: req.body.email, password: hashedPassword})
-    // if (!user) {
-    //     res.status(401).json({error: "Invalid credential"})
-    // } else {
-    //     const token = jwt.sign({sub: user.id}, secret, {expiresIn: '7d'});
-    //
-    //     res.status(200).json({user: user, token: token})
-    // }
     passport.authenticate('user-local', {session: false}, (err, user, info) => {
         console.log("---UserController---")
         console.log("err", err)

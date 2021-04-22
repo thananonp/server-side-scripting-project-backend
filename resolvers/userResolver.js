@@ -1,6 +1,8 @@
 const user = require('../models/userModel')
 const book = require('../models/bookModel')
 const bcrpyt = require('bcrypt')
+const passport = require('passport')
+const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
 
@@ -31,38 +33,33 @@ module.exports = {
                 return bcrpyt.compare(args.password, result.password)
                 // compareUser = result
             })
-            // console.log(compareUser)
-            // return bcrpyt.compare(args.password, compareUser.password)
-            // , (err, result) => {
-            //     if (result) {
-            //         console.log("return true")
-            //         // returnBoolean = true
-            //         return true
-            //     } else {
-            //         // returnBoolean = false
-            //         console.log("return false")
-            //         return false
-            //     }
-            // })
-            //     .then(async result => {
-            //     console.log("result.password", result.password)
-            //     return await bcrpyt.compare(args.password, result.password, async (err, result) => {
-            //         // console.log(err)
-            //         // console.log(result)
-            //         if (result) {
-            //             console.log("return true")
-            //             // returnBoolean = true
-            //             return true
-            //         } else {
-            //             returnBoolean = false
-            //             console.log("return false")
-            //             return false
-            //         }
-            //     })
-            // })
-            // console.log("FINALLY")
-            // console.log("b ", b)
-            // return returnBoolean
+        },
+        userLogin: async (parent, args, {req, res}) => {
+            try {
+                return await new Promise((resolve, reject) => {
+                    passport.authenticate('user-local', {session: false}, (err, user, info) => {
+                        console.log("---UserController---")
+                        console.log("err", err)
+                        console.log("user", user)
+                        console.log("info", info)
+                        if (err || !user) {
+                            reject(err)
+                        }
+                        req.login(user, {session: false}, (err) => {
+                            if (err) {
+                                throw(err)
+                            }
+                            // console.log(user)
+                            // console.log(user)
+                            // generate a signed son web token with the contents of user object and return it in the response
+                            const token = jwt.sign({...user, type: 'user'}, process.env.SECRETJWT);
+                            resolve(token);
+                        });
+                    })({body: args}, res);
+                })
+            } catch (e) {
+                throw(e)
+            }
         }
     },
     Mutation: {

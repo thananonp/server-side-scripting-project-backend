@@ -6,6 +6,7 @@ const userSchema = gql`
         user(id: ID!): User
         users(borrowed: Boolean): [User]
         userComparePassword(id:ID!,password:String!): Boolean
+        userLogin(email: String!, password:String!): String
     }
 
     extend type Mutation {
@@ -37,6 +38,7 @@ const userSchema = gql`
         lastName: String
         password: String
         currentlyBorrowed: Book
+        token: String
     }
 `;
 

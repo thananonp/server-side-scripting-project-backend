@@ -1,6 +1,8 @@
 const staff = require('../models/staffModel')
 const bcrpyt = require("bcrypt");
 const ObjectId = require('mongoose').Types.ObjectId;
+const passport = require('passport')
+const jwt = require('jsonwebtoken');
 const {AuthenticationError} = require("apollo-server-errors");
 
 module.exports = {
@@ -20,6 +22,33 @@ module.exports = {
                 return bcrpyt.compare(args.password, result.password)
                 // compareUser = result
             })
+        },
+        staffLogin: async (parent, args, {req, res}) => {
+            try {
+                return await new Promise((resolve, reject) => {
+                    passport.authenticate('staff-local', {session: false}, (err, user, info) => {
+                        console.log("---StaffController---")
+                        console.log("err", err)
+                        console.log("user", user)
+                        console.log("info", info)
+                        if (err || !user) {
+                            reject(err)
+                        }
+                        req.login(user, {session: false}, (err) => {
+                            if (err) {
+                                throw(err)
+                            }
+                            // console.log(user)
+                            // console.log(user)
+                            // generate a signed son web token with the contents of user object and return it in the response
+                            const token = jwt.sign({...user, type:'staff'}, process.env.SECRETJWT);
+                            resolve(token);
+                        });
+                    })({body: args}, res);
+                })
+            } catch (e) {
+                throw(e)
+            }
         }
     },
     Mutation: {

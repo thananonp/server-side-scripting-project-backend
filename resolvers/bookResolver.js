@@ -135,7 +135,7 @@ module.exports = {
     //TODO clearBookBorrow
     User: {
         currentlyBorrowed(parent) {
-            console.log("book", parent)
+            // console.log("book", parent)
             return book.findById(parent.currentlyBorrowed)
         }
     }

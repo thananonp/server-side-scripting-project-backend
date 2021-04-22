@@ -18,11 +18,11 @@ passport.use('staff-local',
             try {
                 await staffController.getStaff(email)
                     .then(staff => {
-                        console.log("Strategy received password:", password)
-                        console.log("Strategy user password", staff.password)
+                        console.log("received password:", password)
+                        console.log("staff password", staff.password)
                         // console.log('Strategy', user); // result is binary row
                         bcrypt.compare(password, staff.password, (err, result) => {
-                            console.log("Strategy result", result)
+                            console.log("bcrypt result", result)
                             if (result) {
                                 console.log("Strategy logging in")
                                 console.log("Staff =", staff)
@@ -33,7 +33,7 @@ passport.use('staff-local',
                             } else {
                                 console.log("Strategy password incorrect")
                                 setTimeout(() => {
-                                    return done(401, false, {message: 'Invalid credential.'});
+                                    return done(Error("Invalid credential"), false, {message: 'Invalid credential.'});
                                 }, 500)
                             }
                         })
@@ -42,6 +42,8 @@ passport.use('staff-local',
                     })
 
             } catch (err) {
+                console.log("error",err)
+
                 return done(err);
             }
         }));
@@ -55,11 +57,11 @@ passport.use('user-local',
             try {
                 await userController.getUser(email)
                     .then(user => {
-                        console.log("Strategy received password:", password)
-                        console.log("Strategy user password", user.password)
+                        console.log("received password:", password)
+                        console.log("user password", user.password)
                         // console.log('Strategy', user); // result is binary row
                         bcrypt.compare(password, user.password, (err, result) => {
-                            console.log("Strategy result", result)
+                            console.log("bcrypt result", result)
                             if (result) {
                                 console.log("Strategy logging in")
                                 console.log("User =", user)
@@ -69,7 +71,7 @@ passport.use('user-local',
                             } else {
                                 console.log("Strategy password incorrect")
                                 setTimeout(() => {
-                                    return done(401, false, {message: 'Invalid credential.'});
+                                    return done(Error("Invalid credential"), false, {message: 'Invalid credential'});
                                 }, 500)
                             }
                         })
