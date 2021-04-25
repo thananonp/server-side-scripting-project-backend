@@ -9,7 +9,8 @@ const authorSchema = gql`
     extend type Mutation {
         addAuthor(
             name: String!
-            biography: String!
+            biography: String!,
+            file: Upload!
         ): Author,
         editAuthor(
             id:ID!
@@ -25,6 +26,7 @@ const authorSchema = gql`
         id: ID
         name: String
         biography: String
+        imageUrl: String
     }
 
     input AuthorInput{

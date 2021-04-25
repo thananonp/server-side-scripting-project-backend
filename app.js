@@ -47,6 +47,7 @@ app.use(errorHandler)
 // app.use('/book', bookRouter)
 // app.use('/author', authorRouter)
 // app.use('/publisher', publisherRouter)
+
 const checkAuth = (req, res) => {
     try {
         console.log('checkAuth req', req.headers.authorization)
@@ -123,6 +124,7 @@ const checkAuth = (req, res) => {
         app.get('/', (req, res) => {
             res.send('Hello Secure World!');
         });
+        app.use('/author',require('./routes/authorRoute'))
         app.use('/staff', require('./routes/staffRoute'))
         app.use('/user', require('./routes/userRoute'))
 
@@ -135,7 +137,7 @@ const checkAuth = (req, res) => {
 // error handler
         app.use(function (err, req, res, next) {
             // set locals, only providing error in development
-            res.send(404)
+            res.sendStatus(404)
 
         });
 

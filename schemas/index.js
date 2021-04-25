@@ -13,6 +13,12 @@ const linkSchema = gql`
     type Mutation {
         _: Boolean
     }
+    type File {
+        filename: String!
+        mimetype: String!
+        encoding: String!
+        url:String!
+    }
 `;
 
 module.exports = [linkSchema, userSchema, bookSchema, categorySchema
