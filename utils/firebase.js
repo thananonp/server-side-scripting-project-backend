@@ -7,6 +7,6 @@ admin.initializeApp({
     storageBucket: 'gs://sssf-frontend.appspot.com'
 });
 
-const bucket  = admin.storage().bucket()
+const bucket = admin.storage().bucket()
 
 module.exports = {bucket}

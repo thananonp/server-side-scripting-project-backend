@@ -16,6 +16,7 @@ const authorSchema = gql`
             id:ID!
             name: String!
             biography: String!
+            file: Upload
         ): Author,
         deleteAuthor(
             id:ID!
