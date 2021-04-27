@@ -10,11 +10,13 @@ const publisherSchema = gql`
         addPublisher(
             name: String!
             description: String!
+            file: Upload!
         ): Publisher,
         editPublisher(
             id:ID!
             name: String!
             description: String!
+            file: Upload
         ): Publisher,
         deletePublisher(
             id:ID!
@@ -25,6 +27,7 @@ const publisherSchema = gql`
         id: ID
         name: String
         description: String
+        imageUrl: String
     }
 
     input PublisherInput{

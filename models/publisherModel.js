@@ -7,6 +7,7 @@ const publisher = new Schema({
             unique: true,
             index: true
         },
+        imageUrl: {type: String}
     }, {collection: 'publishers'}
 )
 
