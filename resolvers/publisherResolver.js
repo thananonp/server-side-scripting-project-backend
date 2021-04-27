@@ -1,4 +1,5 @@
 const publisher = require('../models/publisherModel')
+const {deletePicture} = require("../utils/firebaseInit");
 const {uploadPicture} = require("../utils/firebaseInit");
 const {authorBucket} = require("../utils/firebaseInit");
 const {generateRandomName} = require("../utils/function");
@@ -44,7 +45,12 @@ module.exports = {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            return publisher.findOneAndDelete({_id: args.id})
+            publisher.findOneAndDelete({_id: args.id}).then(
+                (data)=>{
+                    // console.log(data)
+                    deletePicture(data.imageUrl)
+                }
+            )
         },
     },
     Book:

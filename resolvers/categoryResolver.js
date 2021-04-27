@@ -1,4 +1,5 @@
 const category = require('../models/categoryModel')
+const {deletePicture} = require("../utils/firebaseInit");
 const {uploadPicture} = require("../utils/firebaseInit");
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
@@ -42,7 +43,12 @@ module.exports = {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            return category.findOneAndDelete({_id: ObjectId(args.id)})
+            return category.findOneAndDelete({_id: ObjectId(args.id)}).then(
+                (data)=>{
+                    // console.log(data)
+                    deletePicture(data.imageUrl)
+                }
+            )
         },
     },
     Book: {

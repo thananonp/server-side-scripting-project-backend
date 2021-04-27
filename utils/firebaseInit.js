@@ -10,12 +10,20 @@ admin.initializeApp({
 
 const authorBucket = admin.storage().bucket()
 
+const deletePicture = async (name) => {
+    authorBucket.file(name.substr(72).slice(0, -10)).delete().then((data) => {
+        console.log("complete")
+    }).catch(e => {
+        console.error("err")
+    })
+}
+
 const uploadPicture = async (createReadStream, filename, mimetype, encoding) => {
     if (!mimetype.toString().startsWith("image/")) {
         console.log("Not Picture")
         throw new Error("Wrong file type")
     } else {
-        const randomFileName = filename + generateRandomName
+        const randomFileName = generateRandomName + filename
         const file = authorBucket.file(randomFileName)
         return await new Promise((async (resolve, reject) => {
             await createReadStream().pipe(
@@ -35,4 +43,4 @@ const uploadPicture = async (createReadStream, filename, mimetype, encoding) => 
     }
 }
 
-module.exports = {authorBucket, uploadPicture}
+module.exports = {authorBucket, uploadPicture, deletePicture}

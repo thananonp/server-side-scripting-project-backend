@@ -24,7 +24,7 @@ const categorySchema = gql`
     type Category{
         id:ID
         title: String
-        imageUrl: String
+        imageUrl: String    
     }
 
     input CategoryInput{
