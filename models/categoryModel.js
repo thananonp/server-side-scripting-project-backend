@@ -6,7 +6,8 @@ const category = new Schema({
             required: true,
             unique: true,
             index: true
-        }
+        },
+    imageUrl: {type: String}
     }, {collection: 'categories'}
 )
 

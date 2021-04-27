@@ -15,6 +15,7 @@ const bookSchema = gql`
             dateOfPublication: String!
             pageCount: Int!
             description: String!
+            file: Upload!
         ): Book,
         editBook(
             id: ID!
@@ -25,6 +26,7 @@ const bookSchema = gql`
             dateOfPublication: String!
             pageCount: Int!
             description: String!
+            file: Upload
         ):Book,
         updateBookBorrow(
             id:ID!,
@@ -49,6 +51,7 @@ const bookSchema = gql`
         description: String
         borrowedBy: User
         dateOfBorrow : String
+        imageUrl: String
     }
 
 `;

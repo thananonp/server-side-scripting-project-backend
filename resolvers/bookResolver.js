@@ -2,6 +2,7 @@ const book = require('../models/bookModel')
 const publisher = require('../models/publisherModel')
 const author = require('../models/authorModel')
 const user = require('../models/userModel')
+const {uploadPicture} = require("../utils/firebaseInit");
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
 
@@ -87,6 +88,8 @@ module.exports = {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
+            const {createReadStream, filename, mimetype, encoding} = await args.file
+            args.imageUrl = await uploadPicture(createReadStream, filename, mimetype, encoding)
             const newBook = new book(args)
             return newBook.save()
         },
@@ -94,7 +97,13 @@ module.exports = {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            if (args.file) {
+                const {createReadStream, filename, mimetype, encoding} = await args.file
+                args.imageUrl = await uploadPicture(createReadStream, filename, mimetype, encoding)
+                return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            } else {
+                return book.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            }
         },
         deleteBook: async (parent, args, context) => {
             if (context.user.type !== 'staff') {

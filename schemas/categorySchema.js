@@ -9,10 +9,12 @@ const categorySchema = gql`
     extend type Mutation {
         addCategory(
             title: String!
+            file: Upload!
         ): Category,
         editCategory(
             id:ID!
             title: String!
+            file: Upload
         ): Category,
         deleteCategory(
             id:ID!
@@ -22,6 +24,7 @@ const categorySchema = gql`
     type Category{
         id:ID
         title: String
+        imageUrl: String
     }
 
     input CategoryInput{

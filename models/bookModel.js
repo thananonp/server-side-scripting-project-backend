@@ -19,7 +19,8 @@ const book = new Schema({
         },
         dateOfBorrow: {
             type: Date
-        }
+        },
+        imageUrl: {type: String}
     }, {collection: 'books'}
 )
 

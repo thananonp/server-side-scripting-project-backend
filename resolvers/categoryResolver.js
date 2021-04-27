@@ -1,4 +1,5 @@
 const category = require('../models/categoryModel')
+const {uploadPicture} = require("../utils/firebaseInit");
 const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
 
@@ -20,6 +21,8 @@ module.exports = {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
+            const {createReadStream, filename, mimetype, encoding} = await args.file
+            args.imageUrl = await uploadPicture(createReadStream, filename, mimetype, encoding)
             const newCategory = new category(args)
             return newCategory.save()
         },
@@ -27,7 +30,13 @@ module.exports = {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            return category.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            if (args.file) {
+                const {createReadStream, filename, mimetype, encoding} = await args.file
+                args.imageUrl = await uploadPicture(createReadStream, filename, mimetype, encoding)
+                return category.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            } else {
+                return category.findOneAndUpdate({_id: ObjectId(args.id)}, args, {new: true})
+            }
         },
         deleteCategory: async (parent, args, context) => {
             if (context.user.type !== 'staff') {
