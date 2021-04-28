@@ -44,7 +44,7 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             return category.findOneAndDelete({_id: ObjectId(args.id)}).then(
-                (data)=>{
+                (data) => {
                     // console.log(data)
                     deletePicture(data.imageUrl)
                 }
@@ -53,7 +53,7 @@ module.exports = {
     },
     Book: {
         category(parent) {
-            console.log("category",parent)
+            console.log("category", parent)
             return (
                 category
                     .findById(parent.category)

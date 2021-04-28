@@ -29,24 +29,6 @@ app.use(cors(corsOptions));
 // app.use(jwt())
 app.use(errorHandler)
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
-
-// app.use(logger('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded({extended: false}));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// const staffRouter = require('./routes/staffRoute')
-// const bookRouter = require('./routes/bookRoute')
-// const authorRouter = require('./routes/authorRoute')
-// const publisherRouter = require('./routes/publisherRoute')
-// app.use('/staff', staffRouter);
-// app.use('/book', bookRouter)
-// app.use('/author', authorRouter)
-// app.use('/publisher', publisherRouter)
 
 const checkAuth = (req, res) => {
     try {
@@ -57,10 +39,10 @@ const checkAuth = (req, res) => {
                 {session: false},
                 (err, user, staff, info) => {
                     console.log("=====CHECK-AUTH====")
-                    console.log("err",err)
-                    console.log("user",user)
-                    console.log("staff",staff)
-                    console.log("info",info)
+                    console.log("err", err)
+                    console.log("user", user)
+                    console.log("staff", staff)
+                    console.log("info", info)
                     if (!user && !staff) {
                         reject("No matching")
                     }
@@ -115,26 +97,18 @@ const checkAuth = (req, res) => {
             contentSecurityPolicy: false,
             ieNoOpen: false
         }))
-        // app.use('/cors-enabled', cors(), (req, res) => {
-        //     res.json({msg: 'This is CORS-enabled for a Single Route'})
-        // })
-        // app.use('/auth', require('./routes/authRoute'))
-        // // app.use('/chargemap', checkAuth, require('./routes/chargemapRoute'))
-        // app.use('/chargemap', passport.authenticate('jwt', {session: false}), require('./routes/chargemapRoute'))
+
         app.get('/', (req, res) => {
             res.send('Hello Secure World!');
         });
-        app.use('/author',require('./routes/authorRoute'))
-        app.use('/staff', require('./routes/staffRoute'))
-        app.use('/user', require('./routes/userRoute'))
 
 
-// catch 404 and forward to error handler
+        // catch 404 and forward to error handler
         app.use(function (req, res, next) {
             next(createError(404));
         });
 
-// error handler
+        // error handler
         app.use(function (err, req, res, next) {
             // set locals, only providing error in development
             res.sendStatus(404)

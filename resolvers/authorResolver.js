@@ -3,7 +3,6 @@ const {deletePicture} = require("../utils/firebaseInit");
 const {uploadPicture} = require("../utils/firebaseInit");
 const {AuthenticationError} = require("apollo-server-errors");
 const ObjectId = require('mongoose').Types.ObjectId;
-const {generateRandomName} = require("../utils/function");
 
 module.exports = {
     Query: {
@@ -44,7 +43,7 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             return author.findOneAndDelete({_id: ObjectId(args.id)}).then(
-                (data)=>{
+                (data) => {
                     // console.log(data)
                     deletePicture(data.imageUrl)
                 }

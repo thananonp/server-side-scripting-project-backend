@@ -111,7 +111,7 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             return book.findOneAndDelete({_id: ObjectId(args.id)}).then(
-                (data)=>{
+                (data) => {
                     // console.log(data)
                     deletePicture(data.imageUrl)
                 }

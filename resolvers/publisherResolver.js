@@ -46,7 +46,7 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             publisher.findOneAndDelete({_id: args.id}).then(
-                (data)=>{
+                (data) => {
                     // console.log(data)
                     deletePicture(data.imageUrl)
                 }
