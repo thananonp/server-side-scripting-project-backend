@@ -20,6 +20,36 @@ Both of which has its own authentication and database.
 
 The databases contain records such as author, book, publisher and category.
 
+### Project structure
+
+1. Controller
+
+Allow access the mongoose object.
+
+2. Model
+
+Contain the schema for mongoose.
+
+3. Resolver
+
+Resolve GraphQL query and mutation.
+
+4. Schema
+
+Contain GraphQL query, mutation and type.
+
+5. sec
+
+Build the HTTP and HTTPS server based on the production variable.
+
+6. utils
+
+Contain the utility and  helper function.
+
+7. app.js
+
+is the start JavaScript file.
+
 ### Checklist
 
 * Implement GraphQL API w/ authenticated mutations ✅
