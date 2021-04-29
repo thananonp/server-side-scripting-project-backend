@@ -1,5 +1,4 @@
 const admin = require("firebase-admin");
-const {getStorage, ref} = require('firebase/storage')
 const serviceAccount = require("../firebase-private.json");
 const {generateRandomName} = require("./function");
 
@@ -8,13 +7,13 @@ admin.initializeApp({
     storageBucket: 'gs://sssf-frontend.appspot.com'
 });
 
-const authorBucket = admin.storage().bucket()
+const authorBucket = admin.storage().bucket();
 
 const deletePicture = async (name) => {
     authorBucket.file(name.substr(72).slice(0, -10)).delete().then((data) => {
-        console.log("complete")
+        console.log("complete");
     }).catch(e => {
-        console.error("err")
+        console.error("err");
     })
 }
 
@@ -43,4 +42,4 @@ const uploadPicture = async (createReadStream, filename, mimetype, encoding) => 
     }
 }
 
-module.exports = {authorBucket, uploadPicture, deletePicture}
+module.exports = { authorBucket, uploadPicture, deletePicture}
