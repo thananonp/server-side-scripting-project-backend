@@ -1,4 +1,6 @@
-const mongoose = require('mongoose')
+'use strict';
+
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 const publisher = new Schema({
         description: {type: String, required: true},
@@ -12,4 +14,4 @@ const publisher = new Schema({
 )
 
 
-module.exports = mongoose.model('publisher', publisher)
+module.exports = mongoose.model('publisher', publisher);

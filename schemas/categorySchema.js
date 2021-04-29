@@ -1,3 +1,4 @@
+'use strict';
 const {gql} = require('apollo-server');
 
 const categorySchema = gql`
@@ -32,4 +33,4 @@ const categorySchema = gql`
     }
 `
 
-module.exports = categorySchema
+module.exports = categorySchema;

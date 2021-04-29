@@ -1,5 +1,8 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+'use strict';
+
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 const book = new Schema({
         title: {type: String},
         description: {type: String},
@@ -24,4 +27,4 @@ const book = new Schema({
     }, {collection: 'books'}
 )
 
-module.exports = mongoose.model('book', book)
+module.exports = mongoose.model('book', book);

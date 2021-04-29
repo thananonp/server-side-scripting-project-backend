@@ -1,10 +1,12 @@
-const https = require('https')
+'use strict';
+
+const https = require('https');
 const http = require('http');
-const fs = require('fs')
+const fs = require('fs');
 
 
 const sslkey = fs.readFileSync('ssl-key.pem');
-const sslcert = fs.readFileSync('ssl-cert.pem')
+const sslcert = fs.readFileSync('ssl-cert.pem');
 
 const options = {
     key: sslkey,
@@ -17,8 +19,8 @@ const httpsRedirect = (req, res) => {
 };
 
 const localhost = (app, httpsPort, httpPort) => {
-    console.log("Localhost Environment")
-     https.createServer(options, app).listen(httpsPort);
+    console.log("Localhost Environment");
+    https.createServer(options, app).listen(httpsPort);
      http.createServer(httpsRedirect).listen(httpPort);
 };
 

@@ -1,25 +1,27 @@
-const staff = require('../models/staffModel')
+'use strict';
+
 const bcrpyt = require("bcrypt");
 const ObjectId = require('mongoose').Types.ObjectId;
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const {AuthenticationError} = require("apollo-server-errors");
+const staff = require('../models/staffModel.js')
 
 module.exports = {
     Query: {
         staff: (parent, args) => {
             return staff
-                .findById(args.id)
+                .findById(args.id);
         },
-        staffs: (parent, args) => {
+        staffs: () => {
             return staff
-                .find()
+                .find();
         },
         staffComparePassword: async (parent, args) => {
-            console.log("args.password", args.password)
+            // console.log("args.password", args.password)
             return await staff.findById(args.id).then(result => {
-                console.log("REAL", result.password)
-                return bcrpyt.compare(args.password, result.password)
+                // console.log("REAL", result.password)
+                return bcrpyt.compare(args.password, result.password);
                 // compareUser = result
             })
         },
@@ -27,16 +29,16 @@ module.exports = {
             try {
                 return await new Promise((resolve, reject) => {
                     passport.authenticate('staff-local', {session: false}, (err, user, info) => {
-                        console.log("---StaffController---")
-                        console.log("err", err)
-                        console.log("user", user)
-                        console.log("info", info)
+                        // console.log("---StaffController---")
+                        // console.log("err", err)
+                        // console.log("user", user)
+                        // console.log("info", info)
                         if (err || !user) {
-                            reject(err)
+                            reject(err);
                         }
                         req.login(user, {session: false}, (err) => {
                             if (err) {
-                                throw(err)
+                                throw(err);
                             }
                             // console.log(user)
                             // console.log(user)
@@ -47,7 +49,7 @@ module.exports = {
                     })({body: args}, res);
                 })
             } catch (e) {
-                throw(e)
+                throw(e);
             }
         }
     },
@@ -57,29 +59,29 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             // args.password = await bcrpyt.hash(args.password, 12)
-            const newStaff = new staff(args)
-            return newStaff.save()
+            const newStaff = new staff(args);
+            return newStaff.save();
         },
         editStaff: async (parent, args, context) => {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
+            return staff.findOneAndUpdate({_id: args.id}, args, {new: true});
         },
         changePasswordStaff: async (parent, args, context) => {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
 
-            console.log(args)
-            args.password = await bcrpyt.hash(args.password, 12)
-            return staff.findOneAndUpdate({_id: args.id}, args, {new: true})
+            // console.log(args)
+            args.password = await bcrpyt.hash(args.password, 12);
+            return staff.findOneAndUpdate({_id: args.id}, args, {new: true});
         },
         deleteStaff: async (parent, args, context) => {
             if (context.user.type !== 'staff') {
                 throw new AuthenticationError("authentication failed");
             }
-            return staff.findOneAndDelete({_id: ObjectId(args.id)})
+            return staff.findOneAndDelete({_id: ObjectId(args.id)});
         },
     },
 }

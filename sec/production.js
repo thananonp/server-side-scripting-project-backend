@@ -1,6 +1,8 @@
+'use strict';
+
 const production = (app, port) => {
 
-    console.log("Production Environment")
+    console.log("Production Environment");
     app.enable('trust proxy');
 
     app.use((req, res, next) => {

@@ -1,3 +1,4 @@
+'use strict';
 const {gql} = require('apollo-server');
 
 const publisherSchema = gql`
@@ -37,4 +38,4 @@ const publisherSchema = gql`
 
 `;
 
-module.exports = publisherSchema
+module.exports = publisherSchema;

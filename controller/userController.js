@@ -1,22 +1,24 @@
+'use strict';
+
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel')
-const passport = require('passport')
+const User = require('../models/userModel.js');
+const passport = require('passport');
 require('dotenv').config();
 
 const getUser = async (email) => {
-    const user = await User.findOne({email: email})
-    if (user) return user
+    const user = await User.findOne({email: email});
+    if (user) return user;
     else {
-        return false
+        return false;
     }
 }
 
 const authenticate = async (req, res) => {
     passport.authenticate('user-local', {session: false}, (err, user, info) => {
-        console.log("---UserController---")
-        console.log("err", err)
-        console.log("user", user)
-        console.log("info", info)
+        // console.log("---UserController---")
+        // console.log("err", err)
+        // console.log("user", user)
+        // console.log("info", info)
         if (err || !user) {
             if (err === 401) {
                 return res.status(401).json({
@@ -48,4 +50,4 @@ const authenticate = async (req, res) => {
 }
 module.exports = {
     getUser, authenticate
-}
+};

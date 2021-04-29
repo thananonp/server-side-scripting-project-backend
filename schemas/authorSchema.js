@@ -1,4 +1,5 @@
-const {ApolloServer, gql} = require('apollo-server');
+'use strict';
+const {gql} = require('apollo-server');
 
 const authorSchema = gql`
     extend type Query {
@@ -37,4 +38,4 @@ const authorSchema = gql`
 
 `;
 
-module.exports = authorSchema
+module.exports = authorSchema;

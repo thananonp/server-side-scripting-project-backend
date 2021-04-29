@@ -1,53 +1,54 @@
-const user = require('../models/userModel')
-const book = require('../models/bookModel')
+'use strict';
+
 const bcrpyt = require('bcrypt')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
-const ObjectId = require('mongoose').Types.ObjectId;
 const {AuthenticationError} = require("apollo-server-errors");
+const ObjectId = require('mongoose').Types.ObjectId;
+const user = require('../models/userModel.js');
+const book = require('../models/bookModel.js');
 
 module.exports = {
     Query: {
         user: (parent, args) => {
             return user
-                .findById(args.id)
+                .findById(args.id);
 
         },
         users: (parent, args) => {
             if (args.borrowed) {
                 return user
-                    .find({currentlyBorrowed: {$ne: null}})
+                    .find({currentlyBorrowed: {$ne: null}});
             } else if (args.borrowed === false) {
                 return user
-                    .find({currentlyBorrowed: {$eq: null}})
+                    .find({currentlyBorrowed: {$eq: null}});
             } else {
                 return user
-                    .find()
+                    .find();
             }
 
         },
         userComparePassword: async (parent, args) => {
             console.log("args.password", args.password)
             return await user.findById(args.id).then(result => {
-                console.log("REAL", result.password)
-                return bcrpyt.compare(args.password, result.password)
-                // compareUser = result
+                console.log("REAL", result.password);
+                return bcrpyt.compare(args.password, result.password);
             })
         },
         userLogin: async (parent, args, {req, res}) => {
             try {
                 return await new Promise((resolve, reject) => {
                     passport.authenticate('user-local', {session: false}, (err, user, info) => {
-                        console.log("---UserController---")
-                        console.log("err", err)
-                        console.log("user", user)
-                        console.log("info", info)
+                        // console.log("---UserController---")
+                        // console.log("err", err)
+                        // console.log("user", user)
+                        // console.log("info", info)
                         if (err || !user) {
-                            reject(err)
+                            reject(err);
                         }
                         req.login(user, {session: false}, (err) => {
                             if (err) {
-                                throw(err)
+                                throw(err);
                             }
                             // console.log(user)
                             // console.log(user)
@@ -58,7 +59,7 @@ module.exports = {
                     })({body: args}, res);
                 })
             } catch (e) {
-                throw(e)
+                throw(e);
             }
         }
     },
@@ -78,17 +79,16 @@ module.exports = {
                 throw new AuthenticationError("authentication failed");
             }
             // args.password = await bcrpyt.hash(args.password, 12)
-            console.log(args)
-            return user.findOneAndUpdate({_id: args.id}, args, {new: true})
+            // console.log(args);
+            return user.findOneAndUpdate({_id: args.id}, args, {new: true});
         },
         changePasswordUser: async (parent, args, context) => {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-
-            console.log(args)
-            args.password = await bcrpyt.hash(args.password, 12)
-            return user.findOneAndUpdate({_id: args.id}, args, {new: true})
+            // console.log(args)
+            args.password = await bcrpyt.hash(args.password, 12);
+            return user.findOneAndUpdate({_id: args.id}, args, {new: true});
         },
         deleteUser: async (parent, args, context) => {
             //no check if the id is correct or not just delete and always return null
@@ -97,21 +97,21 @@ module.exports = {
             }
             try {
                 // console.log("deleteUser", args.id)
-                await book.findOneAndUpdate({borrowedBy: args.id}, {borrowedBy: null})
-                return user.findOneAndDelete({_id: ObjectId(args.id)})
+                await book.findOneAndUpdate({borrowedBy: args.id}, {borrowedBy: null});
+                return user.findOneAndDelete({_id: ObjectId(args.id)});
             } catch (e) {
-                return false
+                return false;
             }
 
         },
     },
     Book: {
         borrowedBy(parent) {
-            console.log("user", parent)
+            // console.log("user", parent);
             return (
                 user
                     .findById(parent.borrowedBy)
-            )
+            );
         }
     }
 }

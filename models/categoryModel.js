@@ -1,4 +1,6 @@
-const mongoose = require('mongoose')
+'use strict';
+
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 const category = new Schema({
         title: {
@@ -11,4 +13,4 @@ const category = new Schema({
     }, {collection: 'categories'}
 )
 
-module.exports = mongoose.model('category', category)
+module.exports = mongoose.model('category', category);

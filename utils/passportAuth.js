@@ -6,7 +6,6 @@ const staffController = require('../controller/staffController');
 const userController = require('../controller/userController');
 const passportJWT = require("passport-jwt");
 const bcrypt = require("bcrypt");
-const {hash} = require("bcrypt");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
@@ -18,32 +17,30 @@ passport.use('staff-local',
             try {
                 await staffController.getStaff(email)
                     .then(staff => {
-                        console.log("received password:", password)
-                        console.log("staff password", staff.password)
+                        // console.log("received password:", password)
+                        // console.log("staff password", staff.password)
                         // console.log('Strategy', user); // result is binary row
                         bcrypt.compare(password, staff.password, (err, result) => {
-                            console.log("bcrypt result", result)
+                            // console.log("bcrypt result", result)
                             if (result) {
-                                console.log("Strategy logging in")
-                                console.log("Staff =", staff)
-                                const returnUser = staff
+                                // console.log("Strategy logging in")
+                                // console.log("Staff =", staff)
                                 setTimeout(() => {
                                     return done(null, {user: staff}, {message: 'Logged In Successfully'});
                                 }, 500)
                             } else {
-                                console.log("Strategy password incorrect")
+                                // console.log("Strategy password incorrect")
                                 setTimeout(() => {
                                     return done(Error("Invalid credential"), false, {message: 'Invalid credential.'});
                                 }, 500)
                             }
                         })
-                        console.log("Strategy successfully")
+                        // console.log("Strategy successfully")
                         // use spread syntax to create shallow copy to get rid of binary row type
                     })
 
             } catch (err) {
-                console.log("error", err)
-
+                console.log("error", err);
                 return done(err);
             }
         }));
@@ -52,36 +49,35 @@ passport.use('staff-local',
 passport.use('user-local',
     new Strategy({usernameField: "email", passwordField: "password"},
         async (email, password, done) => {
-            console.log("--- user-local strategy---")
+            // console.log("--- user-local strategy---")
             // const params = username;
             try {
                 await userController.getUser(email)
                     .then(user => {
-                        console.log("received password:", password)
-                        console.log("user password", user.password)
+                        // console.log("received password:", password)
+                        // console.log("user password", user.password)
                         // console.log('Strategy', user); // result is binary row
                         bcrypt.compare(password, user.password, (err, result) => {
-                            console.log("bcrypt result", result)
+                            // console.log("bcrypt result", result)
                             if (result) {
-                                console.log("Strategy logging in")
-                                console.log("User =", user)
+                                // console.log("Strategy logging in")
+                                // console.log("User =", user)
                                 setTimeout(() => {
                                     return done(null, {user}, {message: 'Logged In Successfully'});
                                 }, 500)
                             } else {
-                                console.log("Strategy password incorrect")
+                                // console.log("Strategy password incorrect")
                                 setTimeout(() => {
                                     return done(Error("Invalid credential"), false, {message: 'Invalid credential'});
                                 }, 500)
                             }
                         })
-                        console.log("Strategy successfully")
-
+                        console.log("Strategy successfully");
                         // use spread syntax to create shallow copy to get rid of binary row type
                     })
 
             } catch (err) {
-                console.log("error", err)
+                console.log("error", err);
                 return done(err);
             }
         }));
@@ -93,28 +89,28 @@ passport.use('jwt', new JWTStrategy({
     },
     async function (jwtPayload, done) {
         try {
-            console.log("===jwt===")
-            console.log("JWT PAYLOAD", jwtPayload)
+            // console.log("===jwt===")
+            // console.log("JWT PAYLOAD", jwtPayload)
             if (jwtPayload.type === 'user') {
                 const user = await userController.getUser(jwtPayload.user.email);
-                console.log(" user payload password", jwtPayload.user.password)
-                console.log(" user password", user.password)
+                console.log(" user payload password", jwtPayload.user.password);
+                console.log(" user password", user.password);
                 if (!bcrypt.compare(jwtPayload.user.password, user.password)) {
-                    console.log("user password incorrect")
+                    // console.log("user password incorrect")
                     return done(null, false, null, {message: 'Incorrect password.'});
                 } else {
-                    console.log("user logged in successfully")
+                    // console.log("user logged in successfully")
                     return done(null, user, null, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type}
                 }
             } else if (jwtPayload.type === 'staff') {
                 const staff = await staffController.getStaff(jwtPayload.user.email);
-                console.log("staff payload password", jwtPayload.user.password)
-                console.log(" staff password", staff.password)
+                console.log("staff payload password", jwtPayload.user.password);
+                console.log(" staff password", staff.password);
                 if (!bcrypt.compare(jwtPayload.user.password, staff.password)) {
-                    console.log("staff password incorrect")
+                    // console.log("staff password incorrect");
                     return done(null, null, false, {message: 'Incorrect password.'});
                 } else {
-                    console.log("staff successfully")
+                    // console.log("staff successfully");
                     return done(null, null, staff, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type}
                 }
             }
@@ -131,7 +127,7 @@ passport.use('jwt', new JWTStrategy({
             // }
         } catch
             (err) {
-            console.error(err)
+            console.error(err);
             return done(err);
         }
     }

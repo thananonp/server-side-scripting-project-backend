@@ -1,10 +1,12 @@
+'use strict';
+
 const preference = require('../models/preferenceModel.js')
 const {AuthenticationError} = require("apollo-server-errors");
 
 module.exports = {
     Query: {
         preference: (parent, args) => {
-            return preference.findOne()
+            return preference.findOne();
         }
     },
     Mutation: {
@@ -12,7 +14,7 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            return preference.findOneAndUpdate({_id: args.id}, args, {new: true, runValidators: true,})
+            return preference.findOneAndUpdate({_id: args.id}, args, {new: true, runValidators: true});
 
         }
     }

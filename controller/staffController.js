@@ -1,14 +1,16 @@
+'use strict';
+
 const jwt = require('jsonwebtoken');
-const staff = require('../models/staffModel')
-const passport = require('passport')
+const staff = require('../models/staffModel');
+const passport = require('passport');
 require('dotenv').config();
 const bcrypt = require("bcrypt");
 
 const getStaff = async (email) => {
-    const user = await staff.findOne({email: email})
-    if (user) return user
+    const user = await staff.findOne({email: email});
+    if (user) return user;
     else {
-        return false
+        return false;
     }
 }
 const getAllStaff = async (req, res) => {
@@ -16,11 +18,11 @@ const getAllStaff = async (req, res) => {
     await staff
         .find({})
         .then(allStaffs => res.send(allStaffs))
-        .catch(e => res.status(400).send(e))
+        .catch(e => res.status(400).send(e));
 }
 
 const addNewStaff = async (req, res) => {
-    const newStaff = req.body
+    const newStaff = req.body;
     await staff
         .create(newStaff)
         .then(newStaff => res.send(newStaff))
@@ -30,7 +32,7 @@ const addNewStaff = async (req, res) => {
 }
 
 const deleteStaff = async (req, res) => {
-    let email = req.params.email
+    let email = req.params.email;
     await staff
         .deleteOne({"email": email})
         .then(
@@ -42,7 +44,7 @@ const deleteStaff = async (req, res) => {
 }
 
 const editStaff = async (req, res) => {
-    let email = req.params.email
+    let email = req.params.email;
     await staff
         .findOneAndUpdate({email: email}, {
             name: req.body.name,
@@ -60,16 +62,16 @@ const editStaff = async (req, res) => {
         }).catch(e => {
             console.log(e)
             res.sendStatus(400)
-        })
+        });
 
 }
 
 const authenticate = async (req, res) => {
     passport.authenticate('staff-local', {session: false}, (err, user, info) => {
         console.log("==== in StaffController")
-        console.log("err",err)
-        console.log("user",user)
-        console.log("info",info)
+        console.log("err", err)
+        console.log("user", user)
+        console.log("info", info)
         if (err || !user) {
             if (err === 401) {
                 return res.status(401).json({
@@ -91,7 +93,7 @@ const authenticate = async (req, res) => {
             }
             // console.log(user)
             // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign({...user, type:'staff'}, process.env.SECRETJWT);
+            const token = jwt.sign({...user, type: 'staff'}, process.env.SECRETJWT);
 
             return res.json({token});
         });
@@ -105,4 +107,4 @@ module.exports = {
     deleteStaff,
     editStaff,
     authenticate
-}
+};

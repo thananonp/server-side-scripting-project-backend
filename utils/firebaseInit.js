@@ -1,3 +1,5 @@
+'use strict';
+
 const admin = require("firebase-admin");
 const serviceAccount = require("../firebase-private.json");
 const {generateRandomName} = require("./function");
@@ -19,27 +21,27 @@ const deletePicture = async (name) => {
 
 const uploadPicture = async (createReadStream, filename, mimetype, encoding) => {
     if (!mimetype.toString().startsWith("image/")) {
-        console.log("Not Picture")
-        throw new Error("Wrong file type")
+        // console.log("Not Picture")
+        throw new Error("Wrong file type");
     } else {
-        const randomFileName = generateRandomName + filename
-        const file = authorBucket.file(randomFileName)
+        const randomFileName = generateRandomName + filename;
+        const file = authorBucket.file(randomFileName);
         return await new Promise((async (resolve, reject) => {
             await createReadStream().pipe(
                 file.createWriteStream({
                     metadata: {contentType: mimetype}
                 }))
                 .on('error', async (err) => {
-                    console.log(err)
-                    reject(err)
+                    console.log(err);
+                    reject(err);
                 })
                 .on('finish', async () => {
                     const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${authorBucket.name}/o/${encodeURI(file.name)}?alt=media`;
-                    resolve(publicUrl)
+                    resolve(publicUrl);
 
                 })
         }))
     }
 }
 
-module.exports = { authorBucket, uploadPicture, deletePicture}
+module.exports = { authorBucket, uploadPicture, deletePicture};

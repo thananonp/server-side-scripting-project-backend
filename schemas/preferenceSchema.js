@@ -1,4 +1,5 @@
-const {ApolloServer, gql} = require('apollo-server');
+'use strict';
+const {gql} = require('apollo-server');
 
 const preferenceSchema = gql`
     extend type Query {
