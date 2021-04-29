@@ -50,6 +50,12 @@ Contain the utility and  helper function.
 
 is the start JavaScript file.
 
+### .env file
+
+* URI = mongodb cloud server uri
+* SECRETJWT = 'your jwt secret here'
+* NODE_EVN = production ; for production environment only
+
 ### Checklist
 
 * Implement GraphQL API w/ authenticated mutations ✅
