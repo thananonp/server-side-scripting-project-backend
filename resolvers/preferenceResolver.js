@@ -12,13 +12,8 @@ module.exports = {
             if (!context.user) {
                 throw new AuthenticationError("authentication failed");
             }
-            if (args.file) {
-                const {createReadStream, filename, mimetype, encoding} = await args.file
-                args.imageUrl = await uploadPicture(createReadStream, filename, mimetype, encoding)
-                return preference.findOneAndUpdate({_id: args.id}, args, {new: true})
-            } else {
-                return preference.findOneAndUpdate({_id: args.id}, args, {new: true})
-            }
+            return preference.findOneAndUpdate({_id: args.id}, args, {new: true, runValidators: true,})
+
         }
     }
 }
