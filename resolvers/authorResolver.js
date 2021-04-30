@@ -13,6 +13,9 @@ module.exports = {
         authors: (parent, args) => {
             return author
                 .find();
+        },
+        countAuthor: async () => {
+            return author.count()
         }
     },
     Mutation: {

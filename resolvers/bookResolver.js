@@ -62,6 +62,9 @@ module.exports = {
                     }
                 )
             }
+        },
+        countBook: async () => {
+            return book.count()
         }
     },
     Mutation: {

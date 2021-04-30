@@ -51,6 +51,9 @@ module.exports = {
             } catch (e) {
                 throw(e);
             }
+        },
+        countStaff: async () => {
+            return staff.count()
         }
     },
     Mutation: {
