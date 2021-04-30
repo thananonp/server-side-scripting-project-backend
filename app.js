@@ -25,8 +25,8 @@ const corsOptions = {
     origin:'https://sssf-frontend.web.app/',
     credentials: true // <-- REQUIRED backend setting
 };
-app.use(cors(corsOptions));
-
+// app.use(cors(corsOptions));
+app.use(cors())
 // app.use(jwt())
 app.use(errorHandler)
 
