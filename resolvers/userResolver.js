@@ -61,6 +61,9 @@ module.exports = {
             } catch (e) {
                 throw(e);
             }
+        },
+        countUser: async () => {
+            return user.count()
         }
     },
     Mutation: {

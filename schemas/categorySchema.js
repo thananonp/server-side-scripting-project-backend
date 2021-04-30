@@ -5,6 +5,7 @@ const categorySchema = gql`
     extend type Query {
         category(id:ID!): Category,
         categories: [Category]
+        countCategory: Int
     }
 
     extend type Mutation {

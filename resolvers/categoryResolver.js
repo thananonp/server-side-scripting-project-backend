@@ -16,6 +16,9 @@ module.exports = {
         categories: () => {
             return category
                 .find();
+        },
+        countCategory: async () => {
+            return category.count()
         }
     },
     Mutation: {

@@ -13,6 +13,9 @@ module.exports = {
         publishers: (parent, args) => {
             return publisher
                 .find();
+        },
+        countPublisher: async () => {
+            return publisher.count()
         }
     },
     Mutation: {

@@ -5,6 +5,7 @@ const publisherSchema = gql`
     extend type Query {
         publisher(id:ID!): Publisher
         publishers: [Publisher]
+        countPublisher: Int
     }
 
     extend type Mutation {
