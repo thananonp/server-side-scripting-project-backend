@@ -27,10 +27,6 @@ const categorySchema = gql`
         title: String
         imageUrl: String    
     }
-
-    input CategoryInput{
-        title: String
-    }
 `
 
 module.exports = categorySchema;

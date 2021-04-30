@@ -397,6 +397,8 @@ authors: [Author]
 
 * Add a new author
 
+Require a staff authentication.
+
 ```graphql
 mutation {
     addAuthor(
@@ -426,10 +428,129 @@ mutation {
 
 * Delete an author
 
+Require a staff authentication.
+
 ```graphql
 mutation {
     deleteAuthor(
         id:ID!
     ):Author
+}
+```
+
+### Category
+
+###### schema
+
+```graphql
+type Category{
+    id:ID
+    title: String
+    imageUrl: String
+}
+```
+
+###### query
+
+* Get a single category
+
+Input parameter is ID, return a category
+
+```graphql
+query {
+    category(id:ID!): Category
+}
+```
+
+* Get all category
+
+```graphql
+query {
+categories: [Category]
+}
+```
+
+###### mutation
+
+* Add a new category
+
+Require a staff authentication.
+
+```graphql
+mutation {
+    addCategory(
+        title: String!
+        file: Upload!
+    ): Category
+}
+```
+
+* Edit a category
+
+Require a staff authentication.
+
+file is optional, if given the new picture is saved, else it will use the old picture.
+
+```graphql
+mutation {
+    editCategory(
+        id:ID!
+        title: String!
+        file: Upload
+    ): Category
+}
+```
+
+* Delete a category
+
+Require a staff authentication.
+
+```graphql
+mutation {
+    deleteCategory(
+        id:ID!
+    ):Category
+}
+```
+
+### Preference
+
+###### schema
+
+This preference collection should only have a single document in it.
+
+The only way to create this document is through programmatically way only.
+
+```graphql
+type Preference{
+    id: ID
+    fineRate: Int # How much a user should be fine for a day of late return.
+    borrowableDay: Int # How long can a user borrow a book for.
+}
+```
+
+###### query
+
+```graphql
+query {
+    preference: Preference
+}
+```
+
+###### mutation
+
+* Edit a preference
+
+Required staff authentication.
+
+There is a validator for min and max in both front and backend.
+
+```graphql
+mutation {
+    editPreference(
+        id:ID!
+        fineRate: Int
+        borrowableDay: Int
+    ): Preference
 }
 ```
