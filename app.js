@@ -21,13 +21,20 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser());
 const corsOptions = {
-    origin: 'http://localhost:8001',
+    // origin: 'http://localhost:8001',
+    origin:'https://sssf-frontend.web.app/',
     credentials: true // <-- REQUIRED backend setting
 };
 app.use(cors(corsOptions));
 
 // app.use(jwt())
 app.use(errorHandler)
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 
 const checkAuth = (req, res) => {
@@ -83,6 +90,7 @@ const checkAuth = (req, res) => {
             },
 
         });
+
         server.applyMiddleware({app});
         process.env.NODE_ENV = process.env.NODE_ENV || 'development';
         if (process.env.NODE_ENV === 'production') {
