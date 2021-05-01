@@ -6,15 +6,16 @@ const bcrpyt = require("bcrypt");
 
 const staff = new Schema(
   {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstName: { type: String, required: true, default: "defaultFirstName" },
+    lastName: { type: String, required: true, default: "defaultLastName" },
     email: {
       type: String,
       unique: true,
       index: true,
       required: true,
+      default: "defaultAdmin@admin.com",
     },
-    password: { type: String, required: true },
+    password: { type: String, required: true, default: "Password!123" },
     type: { type: String, default: "staff" },
   },
   { collection: "staffs" }

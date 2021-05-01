@@ -1,5 +1,9 @@
 # Library Management Backend
 
+[Frontend Repo](https://github.com/thananonp/server-side-scripting-project-backend)
+
+[Endpoint of deployed backend](https://thananonp-test.jelastic.metropolia.fi/) `https://thananonp-test.jelastic.metropolia.fi/`
+
 ## Description
 
 ### Feature
@@ -101,6 +105,7 @@ Please refer to [Trello Board](https://trello.com/b/sHWITl32/server-side-scripti
 Thank you for my hard work.
 
 ## License
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ### Checklist
