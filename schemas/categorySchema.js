@@ -1,33 +1,24 @@
-'use strict';
-const {gql} = require('apollo-server');
+"use strict";
+const { gql } = require("apollo-server");
 
 const categorySchema = gql`
-    extend type Query {
-        category(id:ID!): Category,
-        categories: [Category]
-        countCategory: Int
-    }
+  extend type Query {
+    category(id: ID!): Category
+    categories: [Category]
+    countCategory: Int
+  }
 
-    extend type Mutation {
-        addCategory(
-            title: String!
-            file: Upload!
-        ): Category,
-        editCategory(
-            id:ID!
-            title: String!
-            file: Upload
-        ): Category,
-        deleteCategory(
-            id:ID!
-        ):Category
-    }
+  extend type Mutation {
+    addCategory(title: String!, file: Upload!): Category
+    editCategory(id: ID!, title: String!, file: Upload): Category
+    deleteCategory(id: ID!): Category
+  }
 
-    type Category{
-        id:ID
-        title: String
-        imageUrl: String    
-    }
-`
+  type Category {
+    id: ID
+    title: String
+    imageUrl: String
+  }
+`;
 
 module.exports = categorySchema;

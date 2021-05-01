@@ -1,17 +1,19 @@
-'use strict';
+"use strict";
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema
-const publisher = new Schema({
-        description: {type: String, required: true},
-        name: {
-            type: String,
-            unique: true,
-            index: true
-        },
-        imageUrl: {type: String}
-    }, {collection: 'publishers'}
-)
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const publisher = new Schema(
+  {
+    description: { type: String, required: true },
+    name: {
+      type: String,
+      unique: true,
+      index: true,
+      required: true,
+    },
+    imageUrl: { type: String, required: true },
+  },
+  { collection: "publishers" }
+);
 
-
-module.exports = mongoose.model('publisher', publisher);
+module.exports = mongoose.model("publisher", publisher);
