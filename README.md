@@ -1,8 +1,8 @@
 # Library Management Backend
 
-[Frontend Repo](https://github.com/thananonp/server-side-scripting-project-backend)
+[Frontend Repo](https://github.com/thananonp/sssf-project-frontend)
 
-[Endpoint of deployed backend](https://thananonp-test.jelastic.metropolia.fi/) `https://thananonp-test.jelastic.metropolia.fi/`
+[Endpoint of deployed backend](https://thananonp-test.jelastic.metropolia.fi/) `https://thananonp-test.jelastic.metropolia.fi/graphql`
 
 ## Description
 
