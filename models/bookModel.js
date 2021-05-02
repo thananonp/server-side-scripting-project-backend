@@ -5,12 +5,13 @@ const Schema = mongoose.Schema;
 
 const book = new Schema(
   {
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    dateOfPublication: { type: String, required: true },
+    title: { type: String, required: true, default: "title" },
+    description: { type: String, required: true, default: "description" },
+    dateOfPublication: { type: String, required: true, default: "2020-01-01" },
     pageCount: {
       type: Number,
       required: true,
+      default: 1,
       min: [1, "That is a page not a book!"],
     },
     category: {
