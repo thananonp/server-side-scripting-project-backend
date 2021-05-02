@@ -18,11 +18,12 @@ module.exports = {
         return book.find({ borrowedBy: { $ne: null } });
       } else if (args.borrowed === false) {
         return book.find({ borrowedBy: { $eq: null } });
-        return book.find({ category: args.category });
       } else if (args.author) {
         return book.find({ author: args.author });
       } else if (args.publisher) {
         return book.find({ publisher: args.publisher });
+      } else if (args.category) {
+        return book.find({ category: args.category });
       } else {
         return book.find();
       }
