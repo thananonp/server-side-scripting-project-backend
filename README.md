@@ -40,6 +40,10 @@ If you find any bugs or if something break. Try a force refresh (Shift+F5) to fo
 
 If you still have problem try looking in the [Postman Documentation](https://documenter.getpostman.com/view/11771801/TzCJfV1f#8a4f1f8c-f335-4a0b-ad3a-004fa15ac787) to get an idea of how the GraphQL schema works. (Don't forget to select Metropolia Jelastic Env.)
 
+### Known Problem
+* Sometimes it will say authorization failed even if the user is logged in. This can be fixed by 1) Re-login 2) Force Reload
+* You tell me :)
+
 ### Libraries
 
 This project is created using NodeJS. Some libraries include
