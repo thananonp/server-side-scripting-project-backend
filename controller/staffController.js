@@ -74,10 +74,6 @@ const authenticate = async (req, res) => {
     "staff-local",
     { session: false },
     (err, user, info) => {
-      console.log("==== in StaffController");
-      console.log("err", err);
-      console.log("user", user);
-      console.log("info", info);
       if (err || !user) {
         if (err === 401) {
           return res.status(401).json({
@@ -97,8 +93,6 @@ const authenticate = async (req, res) => {
         if (err) {
           res.send(err);
         }
-        // console.log(user)
-        // generate a signed son web token with the contents of user object and return it in the response
         const token = jwt.sign(
           { ...user, type: "staff" },
           process.env.SECRETJWT

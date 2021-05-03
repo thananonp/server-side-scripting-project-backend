@@ -16,7 +16,6 @@ module.exports = {
       return staff.find();
     },
     staffComparePassword: async (parent, args) => {
-      // console.log("args.password", args.password)
       return await staff.findById(args.id).then((result) => {
         return bcrpyt.compare(args.password, result.password);
         // compareUser = result
@@ -29,10 +28,6 @@ module.exports = {
             "staff-local",
             { session: false },
             (err, user, info) => {
-              // console.log("---StaffController---")
-              // console.log("err", err)
-              // console.log("user", user)
-              // console.log("info", info)
               if (err || !user) {
                 reject(err);
               }
@@ -40,9 +35,6 @@ module.exports = {
                 if (err) {
                   throw err;
                 }
-                // console.log(user)
-                // console.log(user)
-                // generate a signed son web token with the contents of user object and return it in the response
                 const token = jwt.sign(
                   { ...user, type: "staff" },
                   process.env.SECRETJWT
@@ -79,8 +71,6 @@ module.exports = {
       if (context.user.type !== "staff") {
         throw new AuthenticationError("authentication failed");
       }
-
-      // console.log(args)
       args.password = await bcrpyt.hash(args.password, 12);
       return staff.findOneAndUpdate({ _id: args.id }, args, { new: true });
     },

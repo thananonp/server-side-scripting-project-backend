@@ -15,9 +15,7 @@ const deletePicture = async (name) => {
   authorBucket
     .file(name.substr(72).slice(0, -10))
     .delete()
-    .then((data) => {
-      // console.log("complete");
-    })
+    .then((data) => {})
     .catch((e) => {
       console.error("err");
     });
@@ -30,7 +28,6 @@ const uploadPicture = async (
   encoding
 ) => {
   if (!mimetype.toString().startsWith("image/")) {
-    // console.log("Not Picture")
     throw new Error("Wrong file type");
   } else {
     const randomFileName = generateRandomName + filename;
@@ -43,7 +40,6 @@ const uploadPicture = async (
           })
         )
         .on("error", async (err) => {
-          // console.log(err);
           reject(err);
         })
         .on("finish", async () => {

@@ -23,9 +23,7 @@ module.exports = {
       }
     },
     userComparePassword: async (parent, args) => {
-      console.log("args.password", args.password);
       return await user.findById(args.id).then((result) => {
-        console.log("REAL", result.password);
         return bcrpyt.compare(args.password, result.password);
       });
     },
@@ -36,10 +34,6 @@ module.exports = {
             "user-local",
             { session: false },
             (err, user, info) => {
-              // console.log("---UserController---")
-              // console.log("err", err)
-              // console.log("user", user)
-              // console.log("info", info)
               if (err || !user) {
                 reject(err);
               }
@@ -47,9 +41,6 @@ module.exports = {
                 if (err) {
                   throw err;
                 }
-                // console.log(user)
-                // console.log(user)
-                // generate a signed son web token with the contents of user object and return it in the response
                 const token = jwt.sign(
                   { ...user, type: "user" },
                   process.env.SECRETJWT
@@ -69,11 +60,6 @@ module.exports = {
   },
   Mutation: {
     addUser: async (parent, args, context) => {
-      // email dupe is checked
-      // if (!context.user) {
-      //     throw new AuthenticationError("authentication failed");
-      // }
-      // args.password = await bcrpyt.hash(args.password, 12)
       const newUser = new user(args);
       return newUser.save();
     },
@@ -82,15 +68,12 @@ module.exports = {
       if (!context.user) {
         throw new AuthenticationError("authentication failed");
       }
-      // args.password = await bcrpyt.hash(args.password, 12)
-      // console.log(args);
       return user.findOneAndUpdate({ _id: args.id }, args, { new: true });
     },
     changePasswordUser: async (parent, args, context) => {
       if (!context.user) {
         throw new AuthenticationError("authentication failed");
       }
-      // console.log(args)
       args.password = await bcrpyt.hash(args.password, 12);
       return user.findOneAndUpdate({ _id: args.id }, args, { new: true });
     },
@@ -100,7 +83,6 @@ module.exports = {
         throw new AuthenticationError("authentication failed");
       }
       try {
-        // console.log("deleteUser", args.id)
         await book.findOneAndUpdate(
           { borrowedBy: args.id },
           { borrowedBy: null }
@@ -113,7 +95,6 @@ module.exports = {
   },
   Book: {
     borrowedBy(parent) {
-      // console.log("user", parent);
       return user.findById(parent.borrowedBy);
     },
   },

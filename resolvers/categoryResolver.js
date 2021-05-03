@@ -8,7 +8,6 @@ const { deletePicture, uploadPicture } = require("../utils/firebaseInit.js");
 module.exports = {
   Query: {
     category: (parent, args) => {
-      // console.log(args.id)
       return category.findById(args.id);
     },
     categories: () => {
@@ -71,14 +70,12 @@ module.exports = {
       return category
         .findOneAndDelete({ _id: ObjectId(args.id) })
         .then((data) => {
-          // console.log(data)
           deletePicture(data.imageUrl);
         });
     },
   },
   Book: {
     category(parent) {
-      // console.log("category", parent);
       return category.findById(parent.category);
     },
   },

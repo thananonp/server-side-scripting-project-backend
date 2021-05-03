@@ -67,14 +67,12 @@ module.exports = {
         throw new AuthenticationError("authentication failed");
       }
       publisher.findOneAndDelete({ _id: args.id }).then((data) => {
-        // console.log(data)
         deletePicture(data.imageUrl);
       });
     },
   },
   Book: {
     publisher(parent) {
-      // console.log("publisher", parent);
       return publisher.findById(parent.publisher);
     },
   },

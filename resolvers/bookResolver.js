@@ -29,27 +29,21 @@ module.exports = {
       }
     },
     searchBooks: async (parent, args) => {
-      // console.log(args)
       if (args.scope === "title") {
         return book.find({ title: { $regex: args.query, $options: "i" } });
       } else if (args.scope === "publisher") {
         return publisher
           .find({ name: { $regex: args.query, $options: "i" } })
           .then((result) => {
-            // console.log("result", result)
             const idArray = result.map((i) => {
               return i._id;
             });
             return book.find({ publisher: { $in: idArray } });
-            // .then(result => {
-            //     console.log("bookfindresult", result)
-            // })
           });
       } else if (args.scope === "author") {
         return author
           .find({ name: { $regex: args.query, $options: "i" } })
           .then((result) => {
-            // console.log("result", result)
             const idArray = result.map((i) => {
               return i._id;
             });
@@ -63,7 +57,6 @@ module.exports = {
   },
   Mutation: {
     addBook: async (parent, args, context) => {
-      console.log("addBook args", args);
       if (context.user.type !== "staff") {
         throw new AuthenticationError("authentication failed");
       }
@@ -113,7 +106,6 @@ module.exports = {
         throw new AuthenticationError("authentication failed");
       }
       return book.findOneAndDelete({ _id: ObjectId(args.id) }).then((data) => {
-        // console.log(data)
         deletePicture(data.imageUrl);
       });
     },
@@ -121,7 +113,6 @@ module.exports = {
       if (context.user.type !== "staff") {
         throw new AuthenticationError("authentication failed");
       }
-      // console.log(args)
       args.dateOfBorrow = Date.now();
       try {
         await user.findOneAndUpdate(
@@ -146,7 +137,6 @@ module.exports = {
           { borrowedBy: null },
           { new: false },
           async (error, result) => {
-            console.log("book clearBookBorrowed", result);
             await user.findOneAndUpdate(
               { _id: result.borrowedBy },
               { currentlyBorrowed: null }
@@ -161,7 +151,6 @@ module.exports = {
   },
   User: {
     currentlyBorrowed(parent) {
-      // console.log("book", parent)
       return book.findById(parent.currentlyBorrowed);
     },
   },

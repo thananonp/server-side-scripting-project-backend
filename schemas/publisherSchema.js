@@ -25,11 +25,6 @@ const publisherSchema = gql`
     description: String
     imageUrl: String
   }
-
-  input PublisherInput {
-    name: String
-    description: String
-  }
 `;
 
 module.exports = publisherSchema;

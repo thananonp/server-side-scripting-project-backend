@@ -1,20 +1,18 @@
 "use strict";
+//Library import
 const mongoose = require("mongoose");
 const createError = require("http-errors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const { ApolloServer } = require("apollo-server-express");
 const bodyParser = require("body-parser");
-// const jwt = require('./utils/jwt');
-const errorHandler = require("./utils/jwt-error-handler");
 const cors = require("cors");
-const schemas = require("./schemas/index.js");
-const resolvers = require("./resolvers/index.js");
-
 const helmet = require("helmet");
-
-const { checkAuth } = require("./utils/function");
-
+//File import
+const resolvers = require("./resolvers/index.js");
+const schemas = require("./schemas/index.js");
+const { checkAuth } = require("./utils/function.js");
+//Initialization
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,8 +24,6 @@ const corsOptions = {
 };
 // app.use(cors(corsOptions));
 app.use(cors());
-// app.use(jwt())
-app.use(errorHandler);
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -60,6 +56,7 @@ app.use(function (req, res, next) {
     });
 
     server.applyMiddleware({ app });
+
     process.env.NODE_ENV = process.env.NODE_ENV || "development";
     if (process.env.NODE_ENV === "production") {
       const production = require("./sec/production");
