@@ -1,13 +1,5 @@
 # Library Management Backend
 
-### Author
-
-###### schema
-
-###### query
-
-###### mutation
-
 ## Documentation
 
 ### User
