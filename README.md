@@ -23,6 +23,23 @@
 * Registration, login, edit personal information and password of user and staff.
 * Backend authentication by user type.
 
+### Testing
+* Register a new user. (Don't have to use your real email. just in a email format.)
+   * Login by using that credential.
+   * Try to edit the setting, change password.
+   * Try to search a book by using the search bar. 
+   * Open a new incognito tab and continue to staff.
+* Login by using staff with email:`staff1@staff.com` password:`passwordstaff1` **Please do not change the password on this staff!**
+   * Register a new staff and try to login.
+   * Try to create a new author, publisher and category
+   * Edit the newly created author, publisher and category
+   * Try to add a new book and edit that new book.
+   * Borrow your newly created book and newly created user and go back and check in the user page.
+
+If you find any bugs or if something break. Try a force refresh (Shift+F5) to force clear the cache.
+
+If you still have problem try looking in the [Postman Documentation](https://documenter.getpostman.com/view/11771801/TzCJfV1f#8a4f1f8c-f335-4a0b-ad3a-004fa15ac787) to get an idea of how the GraphQL schema works. (Don't forget to select Metropolia Jelastic Env.)
+
 ### Libraries
 
 This project is created using NodeJS. Some libraries include
