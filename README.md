@@ -12,11 +12,13 @@
     * can find book, author, publisher and category of books in the library. So they don't have to physically visit the
       library.
     * View the borrowed book's return date and fine.
+    * Edit personal information, password
 * Staff
     * can add, edit, remove the data about book, author, publisher and category of books in the library.
     * They can also manage the user by using the system.
-    * The number of fine rate per day and the number of the days the book can be borrowed can both be modified in the
+    * The number of fine rate per day, and the number of the days the book can be borrowed can both be modified in the
       system.
+    * Edit personal information, password
 * Book can be borrowed and returned through the system. And, the data will appear in the website.
 * Registration, login, edit personal information and password of user and staff.
 * Backend authentication by user type.
@@ -79,9 +81,9 @@ is the start JavaScript file.
 
 ### .env file
 
-* URI = mongodb cloud server uri
-* SECRETJWT = 'your jwt secret here'
-* NODE_EVN = production ; for production environment only
+* URI = `mongodb cloud server uri`
+* SECRETJWT = `your jwt secret here`
+* NODE_ENV = `production ; for production environment only`
 
 ## Installation
 
