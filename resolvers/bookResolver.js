@@ -14,6 +14,8 @@ module.exports = {
       return book.findById(args.id);
     },
     books: (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
       if (args.borrowed) {
         return book.find({ borrowedBy: { $ne: null } });
       } else if (args.borrowed === false) {
@@ -25,12 +27,17 @@ module.exports = {
       } else if (args.category) {
         return book.find({ category: args.category });
       } else {
-        return book.find();
+        return book.find().limit(limit).skip(skip);
       }
     },
     searchBooks: async (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
       if (args.scope === "title") {
-        return book.find({ title: { $regex: args.query, $options: "i" } });
+        return book
+          .find({ title: { $regex: args.query, $options: "i" } })
+          .limit(limit)
+          .skip(skip);
       } else if (args.scope === "publisher") {
         return publisher
           .find({ name: { $regex: args.query, $options: "i" } })
@@ -38,7 +45,10 @@ module.exports = {
             const idArray = result.map((i) => {
               return i._id;
             });
-            return book.find({ publisher: { $in: idArray } });
+            return book
+              .find({ publisher: { $in: idArray } })
+              .limit(limit)
+              .skip(skip);
           });
       } else if (args.scope === "author") {
         return author
@@ -47,12 +57,38 @@ module.exports = {
             const idArray = result.map((i) => {
               return i._id;
             });
-            return book.find({ author: { $in: idArray } });
+            return book
+              .find({ author: { $in: idArray } })
+              .limit(limit)
+              .skip(skip);
           });
       }
     },
     countBook: async () => {
       return book.count();
+    },
+    countBookSearch: async (parent, args) => {
+      if (args.scope === "title") {
+        return book.count({ title: { $regex: args.query, $options: "i" } });
+      } else if (args.scope === "publisher") {
+        return publisher
+          .find({ name: { $regex: args.query, $options: "i" } })
+          .then((result) => {
+            const idArray = result.map((i) => {
+              return i._id;
+            });
+            return book.count({ publisher: { $in: idArray } });
+          });
+      } else if (args.scope === "author") {
+        return author
+          .find({ name: { $regex: args.query, $options: "i" } })
+          .then((result) => {
+            const idArray = result.map((i) => {
+              return i._id;
+            });
+            return book.count({ author: { $in: idArray } });
+          });
+      }
     },
   },
   Mutation: {
