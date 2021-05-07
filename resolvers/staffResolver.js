@@ -12,8 +12,10 @@ module.exports = {
     staff: (parent, args) => {
       return staff.findById(args.id);
     },
-    staffs: () => {
-      return staff.find();
+    staffs: (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
+      return staff.find().limit(limit).skip(skip);
     },
     staffComparePassword: async (parent, args) => {
       return await staff.findById(args.id).then((result) => {
