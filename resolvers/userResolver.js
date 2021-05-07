@@ -14,12 +14,14 @@ module.exports = {
       return user.findById(args.id);
     },
     users: (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
       if (args.borrowed) {
         return user.find({ currentlyBorrowed: { $ne: null } });
       } else if (args.borrowed === false) {
         return user.find({ currentlyBorrowed: { $eq: null } });
       } else {
-        return user.find();
+        return user.find().limit(limit).skip(skip);
       }
     },
     userComparePassword: async (parent, args) => {

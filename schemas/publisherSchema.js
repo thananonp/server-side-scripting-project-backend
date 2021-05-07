@@ -4,7 +4,7 @@ const { gql } = require("apollo-server");
 const publisherSchema = gql`
   extend type Query {
     publisher(id: ID!): Publisher
-    publishers: [Publisher]
+    publishers(limit: Int, skip: Int): [Publisher]
     countPublisher: Int
   }
 

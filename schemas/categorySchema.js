@@ -4,7 +4,7 @@ const { gql } = require("apollo-server");
 const categorySchema = gql`
   extend type Query {
     category(id: ID!): Category
-    categories: [Category]
+    categories(limit: Int, skip: Int): [Category]
     countCategory: Int
   }
 

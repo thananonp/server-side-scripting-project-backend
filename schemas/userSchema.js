@@ -4,7 +4,7 @@ const { gql } = require("apollo-server");
 const userSchema = gql`
   extend type Query {
     user(id: ID!): User
-    users(borrowed: Boolean): [User]
+    users(borrowed: Boolean, limit: Int, skip: Int): [User]
     userComparePassword(id: ID!, password: String!): Boolean
     userLogin(email: String!, password: String!): String
     countUser: Int

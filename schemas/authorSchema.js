@@ -4,7 +4,7 @@ const { gql } = require("apollo-server");
 const authorSchema = gql`
   extend type Query {
     author(id: ID!): Author
-    authors: [Author]
+    authors(limit: Int, skip: Int): [Author]
     countAuthor: Int
   }
 

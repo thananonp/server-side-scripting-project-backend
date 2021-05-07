@@ -9,8 +9,10 @@ module.exports = {
     publisher: async (parent, args) => {
       return publisher.findById(args.id);
     },
-    publishers: async () => {
-      return publisher.find();
+    publishers: async (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
+      return publisher.find().limit(limit).skip(skip);
     },
     countPublisher: async () => {
       return publisher.count();

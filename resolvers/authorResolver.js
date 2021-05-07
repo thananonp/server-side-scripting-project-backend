@@ -10,8 +10,10 @@ module.exports = {
     author: async (parent, args) => {
       return author.findById(args.id);
     },
-    authors: async () => {
-      return author.find();
+    authors: async (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
+      return author.find().limit(limit).skip(skip);
     },
     countAuthor: async () => {
       return author.count();

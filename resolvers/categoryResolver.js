@@ -10,8 +10,10 @@ module.exports = {
     category: (parent, args) => {
       return category.findById(args.id);
     },
-    categories: () => {
-      return category.find();
+    categories: (parent, args) => {
+      const limit = args.limit || null;
+      const skip = args.skip || null;
+      return category.find().limit(limit).skip(skip);
     },
     countCategory: async () => {
       return category.count();
