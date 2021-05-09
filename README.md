@@ -6,6 +6,12 @@
 
 ## Description
 
+### Things that have change from the presentation (Backend)
+
+1. Add limit and skip on query to implement the paging on the frontend.
+2. Update Documentation.md to reflect the new schemas.
+3. Code Cleanup.
+
 ### Feature
 
 * User
@@ -24,24 +30,30 @@
 * Backend authentication by user type.
 
 ### Testing
+
 * Register a new user. (Don't have to use your real email. just in a email format.)
-   * Login by using that credential.
-   * Try to edit the setting, change password.
-   * Try to search a book by using the search bar. 
-   * Open a new incognito tab and continue to staff.
-* Login by using staff with email:`staff1@staff.com` password:`passwordstaff1` **Please do not change the password on this staff!**
-   * Register a new staff and try to login.
-   * Try to create a new author, publisher and category
-   * Edit the newly created author, publisher and category
-   * Try to add a new book and edit that new book.
-   * Borrow your newly created book and newly created user and go back and check in the user page.
+    * Login by using that credential.
+    * Try to edit the setting, change password.
+    * Try to search a book by using the search bar.
+    * Open a new incognito tab and continue to staff.
+* Login by using staff with email:`staff1@staff.com` password:`passwordstaff1` **Please do not change the password on
+  this staff!**
+    * Register a new staff and try to login.
+    * Try to create a new author, publisher and category
+    * Edit the newly created author, publisher and category
+    * Try to add a new book and edit that new book.
+    * Borrow your newly created book and newly created user and go back and check in the user page.
 
 If you find any bugs or if something break. Try a force refresh (Shift+F5) to force clear the cache.
 
-If you still have problem try looking in the [Postman Documentation](https://documenter.getpostman.com/view/11771801/TzCJfV1f#8a4f1f8c-f335-4a0b-ad3a-004fa15ac787) to get an idea of how the GraphQL schema works. (Don't forget to select Metropolia Jelastic Env.)
+If you still have problem try looking in
+the [Postman Documentation](https://documenter.getpostman.com/view/11771801/TzCJfV1f#8a4f1f8c-f335-4a0b-ad3a-004fa15ac787)
+to get an idea of how the GraphQL schema works. (Don't forget to select Metropolia Jelastic Env.)
 
 ### Known Problem
-* Sometimes it will say authorization failed even if the user is logged in. This can be fixed by 1) Re-login 2) Force Reload
+
+* Sometimes it will say authorization failed even if the user is logged in. This can be fixed by 1) Re-login 2) Force
+  Reload [Fixed!]
 * You tell me :)
 
 ### Libraries
@@ -95,6 +107,11 @@ Build the HTTP and HTTPS server based on the production variable.
 6. utils
 
 Contain the utility and helper function.
+
+* firebaseInit.js = contain firebase bucket initialization and function for image uploading and deleting.
+* function.js = contain function to create a default staff and preference, a check token function, and a random name
+  generator function.
+* passportAuth.js = contain a checker function for login user and staff.
 
 7. app.js
 

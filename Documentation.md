@@ -14,6 +14,7 @@ type User{
     lastName: String
     password: String
     currentlyBorrowed: Book
+    token: String
 }
 ```
 
@@ -35,14 +36,13 @@ borrowed == false : return list of users who has no borrowed book.
 
 borrowed == null : returns list of all users.
 
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
 ```graphql
 query{
-    users (borrowed: false) {
-        id
-        email
-        firstName
-        lastName
-    }
+    users(borrowed: Boolean, limit: Int, skip: Int): [User]
 }
 ```
 
@@ -53,6 +53,24 @@ compare the password with the user of that id
 ```graphql
 query{
     userComparePassword(id:ID!,password:String!)
+}
+```
+
+* Login the user using the email and password
+
+Return the user's token.
+
+```graphql
+query {
+    userLogin(email: String!, password: String!): String
+}
+```
+
+* Count the total number of users in the databases
+
+```graphql
+query {
+    countUser: Int
 }
 ```
 
@@ -129,6 +147,10 @@ query {staff(id: ID!)}
 
 * Get list of users information: [Staff]
 
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
 ```graphql
 query{
     staffs{
@@ -147,6 +169,25 @@ compare the password with the staff of that id
 ```graphql
 query{
     staffComparePassword(id:ID!,password:String!)
+}
+```
+
+* Login the staff using email and password
+
+Return a staff's JWT token
+
+```graphql
+query {
+    staffLogin(email: String!, password: String!): String
+
+}
+```
+
+* Count the number of staff in the database
+
+```graphql
+query {
+    countStaff: Int
 }
 ```
 
@@ -243,25 +284,61 @@ author: return books by that author.
 
 publisher: return books by that publisher.
 
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
 **only put one parameter at a time**
 
 ```graphql
 query {
-    books(limit: String, borrowed: Boolean, category: ID,author:ID, publisher:ID)
+    books(
+        limit: Int
+        skip: Int
+        borrowed: Boolean
+        category: ID
+        author: ID
+        publisher: ID
+    ): [Book]
 }
+```
+
+* Count the total number of book in the database
+
+```graphql
+query {countBook: Int}
+```
+
+* Count the number of book in the search query
+
+query: the search query of the user
+
+scope: 'title','author','publisher'
+
+return the number of book that have matching regular expression of that type
+
+```graphql
+query{countBookSearch(query: String, scope: String): Int}
 ```
 
 * Search book
 
 only specify one argument: title, publisher or author
 
+query: the search query of the user
+
+scope: 'title','author','publisher'
+
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
 return book that have matching regular expression of that type
 
 ```graphql
-query Books($id:ID){
-    books (title : $id)
-    #or books (author : $id) 
-    #or books (category : $id) 
+query {
+    searchBooks(query: String, scope: String, limit: Int, skip: Int): [Book]
+
 }
 ```
 
@@ -379,9 +456,23 @@ query {
 
 * Get all author
 
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
 ```graphql
 query {
-authors: [Author]
+    authors(limit: Int, skip: Int): [Author]
+}
+```
+
+* Get the number of all authors in the database
+
+Return a number
+
+```graphql
+query {
+    countAuthor: Int
 }
 ```
 
@@ -456,9 +547,23 @@ query {
 
 * Get all category
 
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
 ```graphql
 query {
-categories: [Category]
+    categories(limit: Int, skip: Int): [Category]
+}
+```
+
+* Get the number of all categories in the database
+
+Return a number
+
+```graphql
+query {
+    countCategory: Int
 }
 ```
 
@@ -523,6 +628,8 @@ type Preference{
 
 ###### query
 
+Get the preference. ID is not needed because there will only be one preference document in the database.
+
 ```graphql
 query {
     preference: Preference
@@ -544,5 +651,90 @@ mutation {
         fineRate: Int
         borrowableDay: Int
     ): Preference
+}
+```
+
+### Publisher
+
+###### schema
+
+```graphql
+type Publisher {
+    id: ID
+    name: String
+    description: String
+    imageUrl: String
+}
+```
+
+###### query
+
+* Get a single publisher
+
+Input parameter is ID, return a publisher
+
+```graphql
+query {
+    publisher(id: ID!): Publisher
+}
+```
+
+* Get all publishers
+
+limit: limit the number of document returned by the databases.
+
+skip: skip n number of document from the first document.
+
+```graphql
+query {
+    publishers(limit: Int, skip: Int): [Publisher]
+}
+```
+
+* Get the number of all publishers in the database
+
+Return a number
+
+```graphql
+query {
+    countPublisher: Int}
+```
+
+###### mutation
+
+* Add a new publisher
+
+Require a staff authentication.
+
+```graphql
+mutation {
+    addPublisher(name: String!, description: String!, file: Upload!): Publisher
+}
+```
+
+* Edit a publisher
+
+Require a staff authentication.
+
+file is optional, if given the new picture is saved, else it will use the old picture.
+
+```graphql
+mutation {
+    editPublisher(
+        id: ID!
+        name: String!
+        description: String!
+        file: Upload
+    ): Publisher
+}
+```
+
+* Delete a publisher
+
+Require a staff authentication.
+
+```graphql
+mutation {
+    deletePublisher(id: ID!): Publisher
 }
 ```
